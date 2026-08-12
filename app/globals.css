@@ -70,7 +70,11 @@
   --f-body:var(--font-plex-sans),'IBM Plex Sans','Segoe UI',system-ui,sans-serif;
   --f-mono:var(--font-plex-mono),'IBM Plex Mono','SF Mono',Consolas,monospace;
 
-  --wrap:1180px;
+  /* Matches the header capsule's max-width (see .site-head .head-in). They
+     were 1180 and 1280, so the nav bar overhung the content it sits above by
+     50px on each side — on a wide screen that reads as the page being a
+     narrow column with a wider bar floating over it. One width, one edge. */
+  --wrap:1280px;
   --gut:clamp(20px,5vw,56px);
   --r:8px;              /* was 3px — the logo is rounded and glossy, not filed */
 }
@@ -195,7 +199,11 @@ body.gaps .ph{background:#FFE9B8;border-style:solid;box-shadow:0 0 0 2px rgba(21
   background-size:100% 34px;opacity:.5;
 }
 .hero .wrap{position:relative;z-index:1}
-.hero-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,486px);gap:clamp(30px,5vw,64px);align-items:center;padding-block:clamp(44px,6.5vw,84px)}
+/* The hero ran 841px tall, so on any laptop shorter than that the figures
+   strip beneath the headline was cut off by the fold — the one row that
+   carries the proof. Tighter block padding brings the whole hero, figures
+   included, inside a 14in viewport. */
+.hero-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,486px);gap:clamp(30px,5vw,64px);align-items:center;padding-block:clamp(26px,3.2vw,44px)}
 @media(max-width:940px){.hero-grid{grid-template-columns:1fr;padding-block:40px}}
 .hero h1{margin:16px 0 18px}
 .hero h1 em{font-style:normal;color:var(--seal);display:block}
@@ -496,16 +504,17 @@ body.gaps .gapbtn{background:#FFE9B8;border-color:#E0BC72;color:#7A5310}
 }
 
 /* ---------------------------------------------------------------- ambience
-   Glass needs something behind it worth refracting. Three low-opacity washes
-   in the existing accent, fixed so they drift under the content on scroll. */
-body::before{
-  content:""; position:fixed; inset:-25vh -12vw; z-index:-1; pointer-events:none;
-  background:
-    radial-gradient(36% 40% at 10% 6%,   color-mix(in oklab, var(--accent) 20%, transparent) 0%, transparent 66%),
-    radial-gradient(32% 38% at 94% 24%,  color-mix(in oklab, var(--accent2) 16%, transparent) 0%, transparent 64%),
-    radial-gradient(44% 36% at 48% 102%, color-mix(in oklab, var(--accent) 13%, transparent) 0%, transparent 70%);
-  filter: blur(26px);
-}
+   There was a fixed, full-viewport wash here — a blue blob anchored at 10% 6%
+   and a green one at 94% 24% — to give the glass capsule something to
+   refract. Being fixed, it never scrolled away, and the two blobs sat exactly
+   where the header is: either side of the transparent nav capsule, at the top
+   of every page. What it actually produced was a permanent blue smudge to the
+   left of the nav bar and a green one to the right.
+
+   The capsule does not need it. It carries its own gradient, its inner
+   highlight ring and a backdrop-filter that refracts whatever content scrolls
+   beneath it, which is a truer glass effect than a static painted blob. The
+   page ground is now flat --paper. */
 
 /* ==========================================================================
    HEADER — a floating capsule, the way a toolbar is treated in this language.

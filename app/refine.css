@@ -245,10 +245,10 @@
 /* The eyebrow, headline and lede were evenly spaced, which read as three
    items rather than one block with a subject. */
 .hero .lab { margin-bottom: 4px; }
-.hero h1 { margin: 14px 0 16px; }
+.hero h1 { margin: 11px 0 13px; }
 
 .hero-actions {
-  display: flex; gap: 10px; flex-wrap: wrap; margin-top: 26px;
+  display: flex; gap: 10px; flex-wrap: wrap; margin-top: 20px;
 }
 @media (max-width: 420px) {
   .hero-actions { flex-direction: column; align-items: stretch; }
@@ -256,7 +256,7 @@
 }
 
 /* Facts read as a datum row: hairline separators between, not around. */
-.hero-facts { margin-top: 30px; padding-top: 24px; }
+.hero-facts { margin-top: 22px; padding-top: 18px; }
 .fact strong { font-size: 1.62rem; letter-spacing: -.028em; color: var(--ink); }
 .fact span { margin-top: 3px; display: block; }
 
@@ -702,15 +702,14 @@ body { overflow-x: clip; }
 .sect--ink .lab::before { background: linear-gradient(90deg, #6ED45B, #B7F0A8) !important; }
 
 /* ---- hero -------------------------------------------------------------- */
-/* The ruled-paper background gains a soft brand wash, so the hero reads as
-   the brand's surface rather than as plain stock. Very low opacity: this is
-   a tint, not a gradient panel. */
-.hero {
-  background:
-    radial-gradient(88% 62% at 8% 0%, rgba(2, 64, 154, .055) 0%, transparent 62%),
-    radial-gradient(70% 60% at 100% 12%, rgba(41, 155, 32, .05) 0%, transparent 58%),
-    var(--card);
-}
+/* The hero used to carry two radial brand washes, a blue one anchored at the
+   top-left corner and a green one at the top-right. The header capsule is
+   transparent and floats above this surface, so at the top of the page those
+   two tints were what showed to the left and right of the nav bar — read as
+   a pair of stray colour patches flanking the header rather than as a tint
+   on the hero. The hero is now the plain card stock its ruled-paper
+   background was designed for. */
+.hero { background: var(--card); }
 /* The headline's second line is the brand green — the logo's own split
    between a blue word and a green word. */
 .hero h1 em { color: var(--green-dk); }

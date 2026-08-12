@@ -23,6 +23,7 @@ import { Arrow, Note, Ph, Rrow } from "@/components/ui";
 import { publishedOnly, resolveProduct, type AdminProduct } from "@/lib/catalogue";
 import { IMG, type ImageKey } from "@/lib/images";
 import { useProducts } from "@/lib/useCatalogue";
+import { EXTERNAL_LINK, waanigoProductUrl } from "@/lib/waanigo";
 
 export function ProductDetail({
   param,
@@ -258,9 +259,13 @@ export function ProductDetail({
               <h3 className="h-sm" style={{ marginBottom: 12 }}>
                 Buy this product
               </h3>
-              <Link className="btn btn--line" href="/contact">
+              {/* Deep link straight to this product on the storefront, not to
+                  a contact form — WaaniGo is where a single pack is actually
+                  bought. The slug is derived from the product name, which is
+                  the same key both catalogues use. */}
+              <a className="btn btn--line" href={waanigoProductUrl(p)} {...EXTERNAL_LINK}>
                 Buy on WaaniGo <Arrow />
-              </Link>
+              </a>
               <Link className="btn btn--ghost" href="/contact" style={{ marginTop: 12 }}>
                 Bulk or distribution enquiry <Arrow />
               </Link>

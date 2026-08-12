@@ -4,13 +4,13 @@
    Everything the footer needs lives here, namespaced .pf-, so it cannot
    collide with anything and can be replaced wholesale again later.
 
-   Ground is the brand blue from the logo (--blue / --blue-dk), deepening into
+   Ground is the brand blue from the logo (--blue / --blue-dk) deepening into
    navy, with the leaf green as the accent — the same relationship the logo
-   has, where a blue shield carries a green leaf. The engraved hairlines are a
-   CSS gradient, not a photograph, so the footer costs no image request.
+   has, where a blue shield carries a green leaf. The molecular wash and the
+   engraved hairlines are CSS gradients, not photographs, so the footer costs
+   no image request beyond the logo itself.
 
-   Compact on purpose: three rows, roughly 320px on desktop against the
-   ~700px the previous footer occupied.
+   Three bands: identity + navigation, contact + closing action, legal base.
    ========================================================================== */
 
 .pf {
@@ -24,19 +24,24 @@
     linear-gradient(172deg, var(--blue) 0%, var(--blue-dk) 46%, #04173A 100%);
 }
 
-/* Engraved rules — the "document stock" motif, drawn rather than loaded. */
+/* The "molecular" motif from the reference: a sparse field of nodes, drawn as
+   two offset dot grids so it reads as a lattice rather than wallpaper. Sits
+   behind everything and takes no pointer events. */
 .pf::before {
   content: "";
   position: absolute;
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  background-image: linear-gradient(rgba(255, 255, 255, .045) 1px, transparent 1px);
-  background-size: 100% 30px;
+  background-image:
+    radial-gradient(rgba(183, 240, 168, .16) 1.4px, transparent 1.5px),
+    radial-gradient(rgba(140, 200, 255, .12) 1.1px, transparent 1.2px),
+    linear-gradient(rgba(255, 255, 255, .035) 1px, transparent 1px);
+  background-size: 118px 118px, 74px 74px, 100% 30px;
+  background-position: 0 0, 37px 37px, 0 0;
 }
 
-/* A bright hairline caps the footer, answering the licence strip at the top
-   of the page. */
+/* A bright hairline caps the footer. */
 .pf-rule {
   position: absolute;
   inset-inline: 0;
@@ -63,49 +68,165 @@
   border-radius: 2px;
 }
 
-/* --------------------------------------------------------- row 1: main ---- */
+/* Shared section heading: mono, letter-spaced, leaf green, with the short
+   underscore bar the reference layout puts under every column title. */
+.pf-col h2,
+.pf-blk h2 {
+  margin: 0 0 15px;
+  padding-bottom: 9px;
+  position: relative;
+  font-family: var(--f-mono);
+  font-size: .595rem;
+  font-weight: 500;
+  letter-spacing: .17em;
+  text-transform: uppercase;
+  color: #6ED45B;
+}
+.pf-col h2::after,
+.pf-blk h2::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 30px;
+  height: 2px;
+  border-radius: 2px;
+  background: #6ED45B;
+  opacity: .75;
+}
+
+/* --------------------------------------- band 1: identity + navigation ---- */
 
 .pf-main {
   display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1.9fr) minmax(0, .85fr);
-  gap: clamp(24px, 3.5vw, 52px);
-  padding-block: clamp(30px, 3.6vw, 44px);
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 2.65fr);
+  gap: clamp(28px, 4vw, 60px);
+  padding-block: clamp(34px, 4vw, 52px) clamp(28px, 3.4vw, 40px);
 }
 
+/* The logo is the deep brand blue on transparent, so it needs a light plate
+   to sit on — against this navy ground the "PIYUSH" half would otherwise be
+   nearly invisible. Recolouring the artwork would be the alternative, and
+   repainting a brand mark is not a stylesheet's decision to make. */
 .pf-brand {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
+  display: inline-block;
   border-bottom: 0 !important;
-  margin-bottom: 11px;
+  margin-bottom: 16px;
+  padding: 11px 15px;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, .5) inset, 0 6px 20px rgba(2, 16, 44, .3);
+  transition: transform .28s cubic-bezier(.2, .7, .2, 1), box-shadow .28s ease;
 }
-.pf-brand svg { width: 32px; height: 32px; flex: none; }
-.pf-brand strong {
-  display: block;
-  font-family: var(--f-display);
-  font-weight: 800;
-  font-size: 1rem;
-  letter-spacing: -.02em;
-  color: #fff;
-  line-height: 1.1;
+.pf-brand:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, .5) inset, 0 10px 26px rgba(2, 16, 44, .38);
 }
-.pf-brand em {
+.pf-brand img {
   display: block;
-  font-style: normal;
-  font-family: var(--f-mono);
-  font-size: .555rem;
-  letter-spacing: .17em;
-  text-transform: uppercase;
-  color: #A3BCD8;
-  margin-top: 3px;
+  width: 202px;
+  height: auto;
 }
 
 .pf-blurb {
-  margin: 0 0 13px;
-  max-width: 34ch;
+  margin: 0 0 20px;
+  max-width: 36ch;
   font-size: .82rem;
-  line-height: 1.6;
+  line-height: 1.65;
   color: #A8C2DE;
+}
+
+/* ---- trust marks ---- */
+
+/* Four to a row on desktop, matching the reference. The icon sits in a
+   bordered tile and the label runs beneath it, so the row reads as a set of
+   marks rather than a list of features. */
+.pf-marks {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px 10px;
+}
+.pf-marks li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+  font-size: .655rem;
+  line-height: 1.32;
+  letter-spacing: .015em;
+  color: #B6CDE6;
+}
+.pf-mark-i {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 9px;
+  border: 1px solid rgba(183, 240, 168, .3);
+  background: rgba(110, 212, 91, .07);
+  color: #8FE07C;
+  transition: border-color .2s ease, background .2s ease, transform .28s cubic-bezier(.2, .7, .2, 1);
+}
+.pf-marks li:hover .pf-mark-i {
+  border-color: rgba(183, 240, 168, .6);
+  background: rgba(110, 212, 91, .14);
+  transform: translateY(-2px);
+}
+.pf-mark-i svg { width: 22px; height: 22px; }
+
+/* ---- link columns ---- */
+
+.pf-nav {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(18px, 2.4vw, 34px);
+}
+.pf-col ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  font-size: .815rem;
+}
+/* The chevron the reference puts before every link. Drawn as a rotated border
+   corner so it costs no markup and no icon file. */
+.pf-col ul a {
+  display: inline-block;
+  position: relative;
+  padding-left: 15px;
+}
+.pf-col ul a::before {
+  content: "";
+  position: absolute;
+  left: 1px;
+  top: .48em;
+  width: 4.5px;
+  height: 4.5px;
+  border-top: 1.5px solid #6ED45B;
+  border-right: 1.5px solid #6ED45B;
+  transform: rotate(45deg);
+  opacity: .8;
+  transition: transform .2s ease, opacity .2s ease;
+}
+.pf-col ul a:hover::before {
+  opacity: 1;
+  transform: rotate(45deg) translate(1.5px, -1.5px);
+}
+
+/* ------------------------------- band 2: contact, hours, closing action ---- */
+
+.pf-connect {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr) minmax(0, 1.1fr);
+  gap: clamp(24px, 3.4vw, 54px);
+  padding-block: clamp(26px, 3.2vw, 38px);
+  border-top: 1px solid rgba(183, 240, 168, .16);
 }
 
 .pf-contact {
@@ -114,45 +235,48 @@
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 5px;
-  font-size: .82rem;
+  gap: 13px;
+  font-size: .815rem;
 }
-.pf-contact address {
-  font-style: normal;
-  line-height: 1.55;
-  color: #A8C2DE;
-  max-width: 32ch;
-}
-
-/* ---- link columns ---- */
-
-.pf-nav {
+.pf-contact li {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: clamp(18px, 2.4vw, 34px);
+  grid-template-columns: 34px minmax(0, 1fr);
+  align-items: start;
+  gap: 11px;
 }
-.pf-col h2 {
-  margin: 0 0 11px;
-  font-family: var(--f-mono);
-  font-size: .585rem;
-  font-weight: 500;
-  letter-spacing: .17em;
-  text-transform: uppercase;
-  color: #6ED45B;
-}
-.pf-col ul {
-  list-style: none;
+.pf-contact address,
+.pf-contact p {
+  font-style: normal;
   margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 7px;
-  font-size: .82rem;
+  line-height: 1.55;
+  color: #B6CDE6;
+  max-width: 30ch;
 }
+.pf-sup { color: #B6CDE6; line-height: 1.55; }
+
+/* Icon chip. Circular, hairline ring — the reference's contact glyphs. */
+.pf-ci {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid rgba(183, 240, 168, .28);
+  background: rgba(110, 212, 91, .07);
+  color: #8FE07C;
+  flex: none;
+}
+.pf-ci svg { width: 17px; height: 17px; }
 
 /* ---- closing action ---- */
 
-.pf-act { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
+.pf-cta p {
+  margin: 0 0 16px;
+  max-width: 34ch;
+  font-size: .8rem;
+  line-height: 1.6;
+  color: #A8C2DE;
+}
 .pf-btn {
   display: inline-flex;
   align-items: center;
@@ -177,81 +301,37 @@
   transform: translateY(-1px);
 }
 .pf-btn:hover svg { transform: translateX(3px); }
-.pf-act p {
-  margin: 0;
-  max-width: 24ch;
-  font-size: .74rem;
-  line-height: 1.55;
-  color: #A8C2DE;
-}
 
-/* ---------------------------------------------------- row 2: identifiers ---- */
+/* ---------------------------------------------------------- band 3: base ---- */
 
-/* A register, not a sentence: the label sits above its number so the eye can
-   run down the values, and a hairline separates each column instead of the
-   run-on spacing the inline version had. */
-.pf-ids {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(158px, 1fr));
-  margin: 0;
-  padding: 0;
+.pf-base {
+  padding-block: 18px clamp(20px, 2.4vw, 28px);
   border-top: 1px solid rgba(183, 240, 168, .16);
-  border-bottom: 1px solid rgba(183, 240, 168, .16);
 }
-.pf-ids > div {
-  min-width: 0;
-  padding: 13px clamp(12px, 1.6vw, 20px) 14px;
-  border-left: 1px solid rgba(183, 240, 168, .13);
-}
-.pf-ids > div:first-child { border-left: 0; padding-left: 0; }
-.pf-ids dt {
-  font-family: var(--f-mono);
-  font-size: .545rem;
-  letter-spacing: .16em;
-  text-transform: uppercase;
-  color: #A3BCD8;
-  margin-bottom: 5px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.pf-ids dd {
-  margin: 0;
-  font-family: var(--f-mono);
-  font-weight: 500;
-  font-size: .755rem;
-  letter-spacing: .02em;
-  color: #EAF2FB;
-  overflow-wrap: anywhere;
-}
-
-/* ---------------------------------------------------------- row 3: base ---- */
-
-.pf-base { padding-block: 16px clamp(18px, 2.2vw, 26px); }
 
 /* The regulatory line is the quietest thing in the footer but must stay
    legible; it is set at a comfortable measure rather than run edge to edge. */
 .pf-disc {
-  margin: 0 0 14px;
-  max-width: 88ch;
+  margin: 0 0 15px;
+  max-width: 92ch;
   font-size: .73rem;
   line-height: 1.66;
   color: #A3BCD8;
 }
 
-/* Three zones, and they sit on one line only when all three genuinely fit.
-   flex + space-between used to leave the legal links stranded in the middle
-   with uneven gaps as soon as the credit wrapped. */
+/* Three zones, and they sit on one line only when all three genuinely fit. */
 .pf-base-row {
   display: grid;
   grid-template-columns: auto 1fr auto;
   align-items: center;
   gap: 10px clamp(16px, 2.5vw, 32px);
-  padding-top: 14px;
+  padding-top: 15px;
   border-top: 1px solid rgba(183, 240, 168, .1);
   font-size: .75rem;
   color: #A3BCD8;
 }
+.pf-copy { color: #A3BCD8; }
+
 .pf-legal {
   display: flex;
   align-items: center;
@@ -260,78 +340,92 @@
   flex-wrap: wrap;
 }
 .pf-legal a { font-size: .75rem; }
-/* A dot between the legal links, drawn rather than typed so it cannot be
-   selected or read out. */
+/* A pipe between the legal links, drawn rather than typed so it cannot be
+   selected or read out by a screen reader. */
 .pf-legal a + a::before {
   content: "";
   display: inline-block;
-  width: 3px; height: 3px; border-radius: 50%;
-  background: currentColor; opacity: .4;
+  width: 1px;
+  height: 11px;
+  background: currentColor;
+  opacity: .3;
   margin-right: clamp(12px, 1.8vw, 20px);
-  vertical-align: middle;
+  vertical-align: -1px;
 }
-.pf-admin { opacity: .6; }
-.pf-admin:hover { opacity: 1; }
 
-@media (max-width: 860px) {
-  .pf-base-row { grid-template-columns: 1fr; justify-items: start; gap: 10px; }
-  .pf-legal { justify-content: flex-start; }
+.pf-end {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  justify-self: end;
 }
 
 /* Build credit. Sits quieter than the legal links — it is an attribution,
    not navigation — and only the studio name is the link. */
-.pf-credit { margin: 0; font-size: .755rem; color: #9FBAD6; }
+.pf-credit { margin: 0; font-size: .755rem; color: #9FBAD6; white-space: nowrap; }
 .pf-credit a { font-size: inherit; color: #A8C2DE; }
 .pf-credit a:hover { color: #fff; }
 
+/* Back to top. An empty fragment scrolls to the document top natively, so no
+   script is involved and the footer stays a server component. */
+.pf-top {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  flex: none;
+  border-radius: 50%;
+  border: 1px solid rgba(183, 240, 168, .3) !important;
+  background: rgba(110, 212, 91, .08);
+  color: #8FE07C;
+  transition: background .2s ease, border-color .2s ease, transform .28s cubic-bezier(.2, .7, .2, 1);
+}
+.pf-top:hover {
+  background: rgba(110, 212, 91, .18);
+  border-color: rgba(183, 240, 168, .65) !important;
+  color: #B7F0A8;
+  transform: translateY(-2px);
+}
+.pf-top svg { width: 17px; height: 17px; }
+
 /* ------------------------------------------------------------ responsive ---- */
 
-/* The closing action drops under the identity block before the link columns
-   are allowed to break — the buttons is the least dense element, so it costs
-   the least to move. */
-@media (max-width: 1020px) {
-  .pf-main { grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr); }
-  .pf-act {
-    grid-column: 1 / -1;
-    flex-direction: row;
-    align-items: center;
-    gap: 16px;
-    padding-top: 4px;
-  }
-  .pf-act p { max-width: none; }
+/* The nav columns break to two-up before the identity block gives up its own
+   column — four columns of links are the first thing that stops fitting. */
+@media (max-width: 1080px) {
+  .pf-main { grid-template-columns: minmax(0, 1fr) minmax(0, 1.8fr); }
+  .pf-nav { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 20px; }
 }
 
-@media (max-width: 720px) {
-  .pf-main { grid-template-columns: 1fr; gap: 26px; }
-  .pf-nav { gap: 22px 18px; }
-  .pf-blurb, .pf-contact address { max-width: none; }
+@media (max-width: 940px) {
+  .pf-connect { grid-template-columns: 1fr 1fr; }
+  .pf-cta { grid-column: 1 / -1; }
+  .pf-cta p { max-width: none; }
 }
 
-/* The identifier columns stop fitting side by side well before the link
-   columns do. Below this they go two-up and the separator turns from a
-   vertical rule into a horizontal one, which is the only way a wrapped grid
-   reads correctly. */
-@media (max-width: 620px) {
-  .pf-ids { grid-template-columns: 1fr 1fr; }
-  .pf-ids > div {
-    border-left: 0;
-    padding-inline: 0 14px;
-    border-top: 1px solid rgba(183, 240, 168, .1);
-  }
-  .pf-ids > div:nth-child(-n + 2) { border-top: 0; }
+@media (max-width: 820px) {
+  .pf-main { grid-template-columns: 1fr; gap: 30px; }
+  .pf-blurb { max-width: none; }
+  .pf-marks { max-width: 340px; }
 }
 
-/* Three columns of four short links still fit a phone; collapsing them to one
-   column each would make the footer taller than the page it closes. */
-@media (max-width: 460px) {
-  .pf-nav { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .pf-act { flex-direction: column; align-items: stretch; }
+@media (max-width: 860px) {
+  .pf-base-row { grid-template-columns: 1fr; justify-items: start; gap: 12px; }
+  .pf-legal { justify-content: flex-start; }
+  .pf-end { justify-self: start; }
+}
+
+@media (max-width: 560px) {
+  .pf-connect { grid-template-columns: 1fr; gap: 26px; }
+  .pf-contact address, .pf-contact p { max-width: none; }
+  .pf-brand img { width: 176px; }
+}
+
+/* Two columns of links still fit a phone; collapsing them to one column each
+   would make the footer taller than the page it closes. */
+@media (max-width: 420px) {
+  .pf-marks { grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: none; }
   .pf-btn { width: 100%; }
-}
-
-@media (max-width: 380px) {
-  .pf-ids { grid-template-columns: 1fr; }
-  .pf-ids > div:nth-child(2) { border-top: 1px solid rgba(183, 240, 168, .1); }
 }
 
 @media (pointer: coarse) {
@@ -340,9 +434,14 @@
     align-items: center;
     min-height: 44px;
   }
+  /* The chevron is absolutely positioned against the link box, which just
+     grew to 44px — re-centre it rather than leaving it pinned to the top. */
+  .pf-col ul a::before { top: 50%; margin-top: -3px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .pf-btn, .pf-btn svg { transition: none; }
-  .pf-btn:hover { transform: none; }
+  .pf-btn, .pf-btn svg, .pf-brand, .pf-mark-i, .pf-top { transition: none; }
+  .pf-btn:hover, .pf-brand:hover, .pf-marks li:hover .pf-mark-i, .pf-top:hover {
+    transform: none;
+  }
 }

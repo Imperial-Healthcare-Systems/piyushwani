@@ -160,11 +160,6 @@ p{margin:0 0 1em}
 }
 body.gaps .ph{background:#FFE9B8;border-style:solid;box-shadow:0 0 0 2px rgba(214, 178, 104,.4)}
 
-/* ---------- licence ticker ---------- */
-.licstrip{background:var(--ink);color:#9FB6C1;font-family:var(--f-mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;overflow:hidden;border-bottom:1px solid #1B3355}
-.licstrip .wrap{display:flex;gap:26px;flex-wrap:wrap;padding-block:9px;justify-content:center}
-.licstrip b{color:#fff;font-weight:500}
-
 /* ---------- header ---------- */
 .site-head{position:sticky;top:0;z-index:60;background:rgba(242, 246, 250,.93);backdrop-filter:blur(9px);border-bottom:1px solid var(--rule)}
 .head-in{display:flex;align-items:center;gap:22px;padding-block:13px}

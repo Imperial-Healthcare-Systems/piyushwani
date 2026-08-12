@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRef, useState } from "react";
 
 import { API, apiFetch } from "@/lib/config";
+import { EXTERNAL_LINK, WAANIGO_SHOP } from "@/lib/waanigo";
 
 type Fields = {
   name: string;
@@ -92,7 +93,11 @@ export default function RfqForm() {
       </h2>
       <p className="muted" style={{ fontSize: ".9rem", marginBottom: 20 }}>
         For bulk purchases, institutional supply or distribution enquiries. For
-        single-unit purchases, shop on WaaniGo instead.
+        single-unit purchases,{" "}
+        <a href={WAANIGO_SHOP} {...EXTERNAL_LINK}>
+          shop on WaaniGo
+        </a>{" "}
+        instead.
       </p>
 
       {reference === null && (

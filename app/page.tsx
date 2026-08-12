@@ -8,6 +8,7 @@ import VerifyTerminal from "@/components/VerifyTerminal";
 import { Arrow, FigurePlate, HeadBlock, Media, Ph, Rrow } from "@/components/ui";
 import { CERTS } from "@/lib/certs";
 import { IMG } from "@/lib/images";
+import { EXTERNAL_LINK, WAANIGO_HOME, WAANIGO_SHOP } from "@/lib/waanigo";
 
 const STANDARDS = [
   ["Traceability", "Every batch we release has its own verification record, accessible by QR code from the pack itself."],
@@ -137,9 +138,9 @@ export default function HomePage() {
                 Our online store. Healthcare, daily essentials, gym products and
                 nutraceuticals, delivered to your door.
               </p>
-              <Link className="btn btn--ghost" href="/contact">
+              <a className="btn btn--ghost" href={WAANIGO_HOME} {...EXTERNAL_LINK}>
                 Visit WaaniGo <Arrow />
-              </Link>
+              </a>
             </div>
           </div>
           <p className="muted" style={{ marginTop: 22, fontSize: ".88rem" }}>
@@ -259,9 +260,9 @@ export default function HomePage() {
             quote request instead.
           </p>
           <div style={{ display: "flex", gap: 10, justifyContent: "center", flexWrap: "wrap" }}>
-            <Link className="btn btn--seal" href="/contact">
+            <a className="btn btn--seal" href={WAANIGO_SHOP} {...EXTERNAL_LINK}>
               Shop on WaaniGo <Arrow />
-            </Link>
+            </a>
             <Link className="btn btn--line" href="/contact">
               Request a quote
             </Link>

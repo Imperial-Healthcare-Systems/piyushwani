@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Archivo, IBM_Plex_Mono, IBM_Plex_Sans } from "next/font/google";
 
 import Footer from "@/components/Footer";
-import LicenceStrip from "@/components/LicenceStrip";
 import Motion from "@/components/Motion";
 import SiteHeader from "@/components/SiteHeader";
 
@@ -76,7 +75,6 @@ export default function RootLayout({
         <a className="skip" href="#main">
           Skip to content
         </a>
-        <LicenceStrip />
         <SiteHeader />
         <main id="main">{children}</main>
         <Footer />

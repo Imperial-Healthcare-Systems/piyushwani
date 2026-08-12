@@ -1,0 +1,809 @@
+/* ==========================================================================
+   PIYUSHWANI — public site refinement layer
+   --------------------------------------------------------------------------
+   Loaded after globals.css and motion.css so it wins on ties. Purely visual:
+   navigation structure, footer hierarchy, card and hero detailing, spacing
+   rhythm and interaction feedback.
+
+   PALETTE: the tokens in globals.css were re-derived from the logo artwork
+   (blue #02409A / green #299B20). Every colour below resolves to one of those
+   tokens — --blue, --green, --green-dk, --lime, --ink, --slate, --mute,
+   --paper, --card, --rule, --rule-soft, --amber, --alert — or to a
+   transparency of one. Nothing here invents a hue the logo does not contain.
+
+   The glass layer in globals.css sets several chrome rules with !important;
+   where a rule here has to beat it, that is why the !important is present.
+   ========================================================================== */
+
+/* ==========================================================================
+   1. NAVIGATION
+   ========================================================================== */
+
+.head-in { gap: 18px; }
+
+/* The nav sits hard right; the CTA gets breathing room from the links. */
+.nav { gap: 3px; align-items: center; }
+
+/* ---- top-level items --------------------------------------------------- */
+.site-head .navlink,
+.site-head .navgrp-t {
+  display: inline-flex; align-items: center; gap: .34em;
+  font-family: var(--f-body);
+  font-size: .855rem; font-weight: 500; line-height: 1;
+  color: var(--slate); background: none; border: 0; cursor: pointer;
+  padding: 10px 13px; border-radius: 100px;
+  transition: color .2s ease, background .28s var(--ease-lg);
+}
+.site-head .navlink:hover,
+.site-head .navgrp-t:hover { color: var(--ink); }
+.site-head .navlink.on,
+.site-head .navgrp-t.on { color: var(--seal); font-weight: 600; }
+
+/* The active marker is a rule under the label, not a filled pill — a filled
+   pill next to the filled CTA made two competing "primary" shapes. */
+.site-head .navlink,
+.site-head .navgrp-t { position: relative; }
+.site-head .navlink.on::after,
+.site-head .navgrp-t.on::after {
+  content: ""; position: absolute; left: 13px; right: 13px; bottom: 3px;
+  height: 2px; border-radius: 2px; background: var(--seal);
+}
+.site-head .navgrp-t.on::after { right: 26px; }
+
+.site-head .navgrp-t .caret {
+  opacity: .5; transition: transform .28s var(--ease-lg), opacity .2s ease;
+}
+.site-head .navgrp.open .navgrp-t .caret { transform: rotate(180deg); opacity: .9; }
+
+/* ---- dropdown panel ---------------------------------------------------- */
+.navgrp { position: relative; }
+.navmenu {
+  position: absolute; top: calc(100% + 10px); left: 50%;
+  transform: translate(-50%, -6px);
+  min-width: 268px; padding: 7px; z-index: 70;
+  display: flex; flex-direction: column; gap: 1px;
+  opacity: 0; visibility: hidden; pointer-events: none;
+  border-radius: 18px;
+  background: linear-gradient(160deg,
+    rgba(255, 255, 255, .94) 0%, rgba(255, 255, 255, .86) 44%, rgba(255, 255, 255, .92) 100%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%); backdrop-filter: blur(28px) saturate(180%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .95),
+    inset 0 0 0 1px rgba(255, 255, 255, .5),
+    0 22px 46px -22px rgba(8, 23, 45, .38),
+    0 4px 12px -6px rgba(8, 23, 45, .2);
+  transition: opacity .22s var(--ease-lg), transform .26s var(--ease-lg), visibility .26s;
+}
+.navgrp.open .navmenu {
+  opacity: 1; visibility: visible; pointer-events: auto;
+  transform: translate(-50%, 0);
+}
+/* A hit-bridge so the pointer can cross the gap without the menu closing. */
+.navmenu::before {
+  content: ""; position: absolute; left: 0; right: 0; top: -12px; height: 12px;
+}
+
+.site-head .navmenu a {
+  display: flex; flex-direction: column; gap: 1px;
+  padding: 9px 12px; border-radius: 12px !important;
+  background: transparent !important; box-shadow: none !important;
+  text-decoration: none; transition: background .2s ease;
+}
+.site-head .navmenu a strong {
+  font-family: var(--f-body); font-size: .875rem; font-weight: 600;
+  color: var(--ink); letter-spacing: -.005em; line-height: 1.35;
+}
+.site-head .navmenu a small {
+  font-size: .755rem; color: var(--mute); line-height: 1.4;
+}
+.site-head .navmenu a:hover {
+  background: rgba(2, 64, 154, .07) !important;
+}
+.site-head .navmenu a.on {
+  background: rgba(2, 64, 154, .1) !important;
+}
+.site-head .navmenu a.on strong { color: var(--seal); }
+.site-head .navmenu a:focus-visible { outline: 2px solid var(--seal); outline-offset: -2px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .navmenu { transition: opacity .01ms, visibility .01ms; transform: translate(-50%, 0); }
+  .site-head .navgrp-t .caret { transition: none; }
+}
+
+/* ---- CTA --------------------------------------------------------------- */
+.site-head .nav a.head-cta { margin-left: 8px; gap: .5em; }
+.site-head .nav a.head-cta svg { opacity: .9; }
+
+/* ---- burger ------------------------------------------------------------ */
+.burger {
+  width: 42px; height: 42px; display: none;
+  align-items: center; justify-content: center; flex-direction: column;
+  border-radius: 100px; border: 0;
+  background: linear-gradient(160deg, rgba(255, 255, 255, .86), rgba(255, 255, 255, .62));
+  -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .95), inset 0 0 0 1px rgba(255, 255, 255, .5);
+}
+.burger span {
+  width: 17px; height: 1.6px; background: var(--ink); margin: 2.6px 0;
+  border-radius: 2px; transition: transform .3s var(--ease-lg), opacity .2s ease;
+}
+.burger[aria-expanded="true"] span:nth-child(1) { transform: translateY(4.2px) rotate(45deg); }
+.burger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.burger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-4.2px) rotate(-45deg); }
+
+.nav-scrim { display: none; }
+
+/* ---- drawer ------------------------------------------------------------ */
+@media (max-width: 1000px) {
+  .burger { display: flex; }
+
+  .nav-scrim {
+    display: block; position: fixed; inset: 0; z-index: 55;
+    background: rgba(8, 20, 40, .34);
+    -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px);
+    animation: nav-fade .22s ease both;
+  }
+  @keyframes nav-fade { from { opacity: 0 } to { opacity: 1 } }
+
+  .site-head .nav {
+    position: absolute; top: calc(100% + 8px); left: clamp(10px, 2vw, 20px); right: clamp(10px, 2vw, 20px);
+    z-index: 60;
+    display: none; flex-direction: column; align-items: stretch; gap: 2px;
+    max-height: calc(100dvh - 96px); overflow-y: auto; overscroll-behavior: contain;
+    padding: 12px; border: 0; border-radius: 22px;
+    background: linear-gradient(160deg,
+      rgba(255, 255, 255, .96) 0%, rgba(252, 253, 255, .92) 44%, rgba(255, 255, 255, .95) 100%);
+    -webkit-backdrop-filter: blur(30px) saturate(180%); backdrop-filter: blur(30px) saturate(180%);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, .95),
+      inset 0 0 0 1px rgba(255, 255, 255, .55),
+      0 26px 54px -24px rgba(8, 23, 45, .42);
+  }
+  .site-head .nav.open { display: flex; }
+
+  /* Inside the drawer the groups are already expanded — a dropdown within a
+     drawer is a trap on touch, so the panel is simply laid out inline. */
+  .navgrp { position: static; }
+  .site-head .navgrp-t {
+    width: 100%; justify-content: space-between;
+    padding: 12px 12px 6px;
+    font-family: var(--f-mono); font-size: .64rem; font-weight: 600;
+    letter-spacing: .16em; text-transform: uppercase; color: var(--mute);
+    pointer-events: none; /* the label is a heading here, not a control */
+  }
+  .site-head .navgrp-t .caret { display: none; }
+  .site-head .navgrp-t.on { color: var(--seal); }
+  .site-head .navlink.on::after,
+  .site-head .navgrp-t.on::after { display: none; }
+
+  .navmenu {
+    position: static; transform: none; opacity: 1; visibility: visible;
+    pointer-events: auto; min-width: 0; padding: 0;
+    background: none !important; box-shadow: none !important;
+    -webkit-backdrop-filter: none; backdrop-filter: none;
+  }
+  .navmenu::before { display: none; }
+
+  /* globals.css draws a hairline under every `.nav a` below 1000px, which is
+     wrong once the links are grouped cards inside the drawer. */
+  .site-head .navmenu a,
+  .site-head .navlink {
+    border-bottom: 0;
+  }
+  .site-head .navmenu a {
+    padding: 11px 12px; min-height: 44px; justify-content: center;
+  }
+
+  .site-head .navlink {
+    padding: 13px 12px; min-height: 44px; border-radius: 12px;
+    font-size: .95rem; font-weight: 600; color: var(--ink);
+  }
+  .site-head .navlink:hover { background: rgba(2, 64, 154, .07); }
+
+  .site-head .nav a.head-cta {
+    margin: 10px 0 2px; justify-content: center; min-height: 48px; font-size: .95rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-scrim { animation: none; }
+  .burger span { transition: none; }
+}
+
+/* ==========================================================================
+   2. BUTTONS
+   ========================================================================== */
+
+.btn {
+  font-size: .885rem; padding: 13px 24px; min-height: 46px;
+  letter-spacing: -.004em;
+}
+.btn--ghost { padding-inline: 0; min-height: 0; }
+.btn--ghost::after { display: none; }
+
+/* The ghost link's arrow travels; the label does not shift, so the row below
+   it never reflows. */
+.btn--ghost { position: relative; }
+.btn--ghost svg, .btn--ghost .arw { transition: transform .32s var(--ease-lg); }
+.btn--ghost:hover svg, .btn--ghost:hover .arw { transform: translateX(3px); }
+
+/* Focus has to survive the glass layer's box-shadow overrides. */
+.btn:focus-visible {
+  outline: 3px solid var(--seal); outline-offset: 3px;
+}
+.sect--ink .btn:focus-visible {
+  outline-color: #6ED45B;
+}
+
+/* ==========================================================================
+   3. HERO
+   ========================================================================== */
+
+.hero h1 { letter-spacing: -.028em; }
+.hero .lede { margin-top: 2px; }
+
+/* The eyebrow, headline and lede were evenly spaced, which read as three
+   items rather than one block with a subject. */
+.hero .lab { margin-bottom: 4px; }
+.hero h1 { margin: 14px 0 16px; }
+
+.hero-actions {
+  display: flex; gap: 10px; flex-wrap: wrap; margin-top: 26px;
+}
+@media (max-width: 420px) {
+  .hero-actions { flex-direction: column; align-items: stretch; }
+  .hero-actions .btn { width: 100%; }
+}
+
+/* Facts read as a datum row: hairline separators between, not around. */
+.hero-facts { margin-top: 30px; padding-top: 24px; }
+.fact strong { font-size: 1.62rem; letter-spacing: -.028em; color: var(--ink); }
+.fact span { margin-top: 3px; display: block; }
+
+/* ==========================================================================
+   4. SECTION RHYTHM & TYPOGRAPHY
+   ========================================================================== */
+
+.sect { padding-block: clamp(60px, 7.5vw, 108px); }
+.sect--tight { padding-block: clamp(40px, 5vw, 66px); }
+
+.head-block { margin-bottom: clamp(28px, 3.8vw, 48px); }
+.head-block .lede { margin-top: 16px; }
+h2.h-lg { letter-spacing: -.026em; }
+
+/* Long-form paragraphs get a slightly tighter measure than the 70ch default;
+   62–68ch is the comfortable band at this size. */
+.body-w { max-width: 66ch; }
+.body-w p + p { margin-top: 0; }
+
+/* Optical alignment: the mono eyebrow's rule should line up with the text
+   above it, not float mid-cap-height. */
+.lab { line-height: 1.1; }
+
+/* ==========================================================================
+   5. CARDS
+   ========================================================================== */
+
+.card { padding: 26px; }
+.card h3 { margin-bottom: 9px; letter-spacing: -.016em; }
+.card p { font-size: .92rem; line-height: 1.6; }
+.card .btn--ghost { margin-top: 14px; }
+
+/* The brand rule sits inside the card radius rather than clipping against it. */
+.card--brand { position: relative; overflow: hidden; }
+.card--brand::after {
+  content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: var(--seal); z-index: 3; border-radius: var(--lg-r) var(--lg-r) 0 0;
+}
+.card--soon::after { background: var(--amber); }
+.card--brand { border-top: 0 !important; }
+
+/* ---- product cards ----------------------------------------------------- */
+.p-card { position: relative; }
+.p-thumb { aspect-ratio: 4 / 3; }
+.p-in { padding: 17px 18px 18px; gap: 7px; }
+.p-in h3 { font-size: 1.005rem; line-height: 1.3; letter-spacing: -.014em; }
+.p-comp {
+  font-size: .755rem; line-height: 1.5; color: var(--mute);
+  display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2;
+  -webkit-box-orient: vertical; overflow: hidden;
+}
+.p-in .go {
+  display: inline-flex; align-items: center; gap: .4em;
+  padding-top: 14px; margin-top: auto; font-size: .8rem;
+}
+
+/* The form chip reads as a spec tag, matched to the register motif. */
+.p-thumb .form {
+  top: 11px; left: 11px; font-size: .585rem; padding: 4px 9px;
+  background: rgba(255, 255, 255, .92);
+  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+  border: 0; box-shadow: inset 0 0 0 1px rgba(214, 224, 236, .9);
+  color: var(--slate); font-weight: 500;
+}
+
+/* Prescription vs nutraceutical, told with a label and not colour alone. */
+.p-kind {
+  position: absolute; top: 11px; right: 11px; z-index: 2;
+  font-family: var(--f-mono); font-size: .585rem; font-weight: 500;
+  letter-spacing: .12em; text-transform: uppercase;
+  padding: 4px 9px; border-radius: 100px;
+  background: rgba(255, 255, 255, .92);
+  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+  box-shadow: inset 0 0 0 1px rgba(214, 224, 236, .9);
+}
+.p-kind.rx { color: var(--seal); }
+.p-kind.nut { color: var(--amber); }
+
+/* ---- category tiles ---------------------------------------------------- */
+.cattile { aspect-ratio: 3 / 2; }
+.cattile .cap {
+  left: 18px; bottom: 16px; right: 18px; font-size: 1.06rem;
+  display: flex; align-items: center; gap: .45em;
+}
+.cattile .cap::after {
+  content: ""; width: 15px; height: 1.5px; background: currentColor;
+  border-radius: 2px; opacity: 0; transform: translateX(-5px);
+  transition: opacity .35s var(--ease-lg), transform .35s var(--ease-lg);
+}
+.cattile:hover .cap::after { opacity: .9; transform: none; }
+.cattile::after { background: linear-gradient(180deg, transparent 40%, rgba(4, 23, 58, .74) 100%); }
+
+@media (prefers-reduced-motion: reduce) {
+  .cattile .cap::after { transition: none; }
+}
+
+/* ==========================================================================
+   6. RECORD ROWS & SPEC TABLES
+   ========================================================================== */
+
+.rrow { padding: 22px 0; gap: 26px; }
+.rrow > .k { letter-spacing: .16em; }
+.rrow > .v p { font-size: .93rem; }
+.rrow:hover { background: rgba(2, 64, 154, .028); }
+
+/* ==========================================================================
+   7. CERTIFICATION / TRUST TILES
+   ========================================================================== */
+
+.cert { padding: 24px; gap: 11px; }
+.cert-h h3 { font-size: 1.1rem; letter-spacing: -.016em; }
+.cert-badge { font-weight: 500; padding: 5px 10px; }
+
+/* The compliance band on the homepage: tiles read as records, and lift very
+   slightly so the section does not feel inert next to the glass cards. */
+.trust-tile {
+  border-radius: 16px; padding: 20px;
+  background: rgba(255, 255, 255, .045);
+  box-shadow: inset 0 0 0 1px rgba(110, 212, 91, .18);
+  transition: background .3s var(--ease-lg), box-shadow .3s var(--ease-lg), transform .3s var(--ease-lg);
+}
+.trust-tile:hover {
+  background: rgba(255, 255, 255, .08);
+  box-shadow: inset 0 0 0 1px rgba(110, 212, 91, .34);
+  transform: translateY(-2px);
+}
+.trust-tile .b {
+  font-family: var(--f-mono); font-size: .6rem; letter-spacing: .14em;
+  text-transform: uppercase; color: #6ED45B;
+}
+.trust-tile .n {
+  font-family: var(--f-display); font-weight: 800; font-size: 1.16rem;
+  color: #fff; margin-top: 7px; letter-spacing: -.018em; line-height: 1.25;
+}
+@media (prefers-reduced-motion: reduce) { .trust-tile:hover { transform: none; } }
+
+/* ==========================================================================
+   8. PRODUCT DETAIL
+   ========================================================================== */
+
+.pd-render { aspect-ratio: 16 / 10; }
+.pd-aside { position: sticky; top: 92px; }
+@media (max-width: 860px) { .pd-aside { position: static; } }
+
+.pd-title { margin: 14px 0 12px; letter-spacing: -.026em; }
+.pd-comp {
+  font-family: var(--f-mono); font-size: .9rem; line-height: 1.6;
+  color: var(--slate); letter-spacing: .01em;
+}
+
+/* Two headline facts sit under the composition so the pack's identity is
+   readable without scrolling to the spec table. */
+.pd-meta {
+  display: flex; flex-wrap: wrap; gap: 12px 34px;
+  margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--rule);
+}
+.pd-meta span { display: flex; flex-direction: column; gap: 3px; }
+.pd-meta i {
+  font-style: normal; font-family: var(--f-mono); font-size: .6rem;
+  letter-spacing: .15em; text-transform: uppercase; color: var(--mute);
+}
+.pd-meta b {
+  font-family: var(--f-display); font-weight: 700; font-size: 1rem;
+  letter-spacing: -.014em; color: var(--ink);
+}
+
+.pd-actions .btn--line, .pd-actions .btn--seal { width: 100%; }
+.pd-actions .btn--ghost { width: auto; }
+
+/* ==========================================================================
+   9. FOOTER
+   The footer is no longer styled here. It has its own component
+   (components/Footer.tsx) and its own stylesheet (app/footer.css),
+   namespaced .pf-, loaded after this file.
+   ========================================================================== */
+
+/* ==========================================================================
+   10. FORMS & FOCUS
+   ========================================================================== */
+
+.f label { letter-spacing: .15em; }
+.f input, .f select, .f textarea { padding: 12px 14px; min-height: 46px; }
+.f textarea { min-height: 124px; }
+
+/* ==========================================================================
+   11. TOUCH TARGETS
+   Anything interactive clears 44px on coarse pointers.
+   ========================================================================== */
+@media (pointer: coarse) {
+  .nav a, .navlink, .navmenu a, .tabs button, .chip { min-height: 44px; }
+  .tabs button { display: inline-flex; align-items: center; }
+}
+
+/* ==========================================================================
+   12. CATALOGUE FILTERS
+   Eleven products in one grid gave a visitor no route to the four they came
+   for. Chips rather than a select: the options are few, and a chip shows the
+   current state without being opened.
+   ========================================================================== */
+
+.cat-filters {
+  display: flex; flex-direction: column; gap: 12px;
+  padding: 18px 0 20px; margin-bottom: 26px;
+  border-block: 1px solid var(--rule);
+}
+.cat-filter-row { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; }
+.cat-filter-l {
+  flex: none; min-width: 68px;
+  font-family: var(--f-mono); font-size: .62rem; font-weight: 500;
+  letter-spacing: .17em; text-transform: uppercase; color: var(--mute);
+}
+.chips { display: flex; gap: 7px; flex-wrap: wrap; }
+
+.fchip {
+  font-family: var(--f-body); font-size: .8rem; font-weight: 500;
+  padding: 7px 15px; border-radius: 100px; cursor: pointer;
+  background: var(--card); color: var(--slate);
+  border: 1px solid var(--rule);
+  transition: background .18s var(--e, cubic-bezier(.2, .7, .2, 1)),
+              border-color .18s ease, color .18s ease;
+}
+.fchip:hover { border-color: var(--seal); color: var(--seal); }
+.fchip.on {
+  background: var(--seal); border-color: var(--seal); color: #fff;
+  box-shadow: 0 2px 8px -3px rgba(2, 64, 154, .5);
+}
+.fchip:focus-visible { outline: 3px solid var(--seal); outline-offset: 2px; }
+
+.cat-count {
+  display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+  margin: 2px 0 0;
+  font-family: var(--f-mono); font-size: .68rem; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--mute);
+}
+.cat-clear {
+  background: none; border: 0; padding: 0; cursor: pointer;
+  font: inherit; color: var(--seal); text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.cat-clear:hover { color: var(--seal-dk); }
+
+.cat-empty {
+  padding: clamp(34px, 6vw, 60px) 22px; text-align: center;
+  background: var(--card); border: 1px dashed var(--rule);
+  border-radius: var(--img-r);
+}
+.cat-empty strong {
+  display: block; font-family: var(--f-display); font-weight: 800;
+  font-size: 1.12rem; letter-spacing: -.015em; color: var(--ink);
+}
+.cat-empty p { margin: .5rem auto 0; max-width: 44ch; color: var(--mute); font-size: .92rem; }
+.cat-empty .btn { margin-top: 18px; }
+
+/* ==========================================================================
+   13. PRODUCT CARD — category and summary lines
+   ========================================================================== */
+
+.p-cat {
+  font-family: var(--f-mono); font-size: .6rem; font-weight: 500;
+  letter-spacing: .16em; text-transform: uppercase; color: var(--seal);
+}
+.p-short {
+  margin: 0; font-size: .845rem; line-height: 1.55; color: var(--slate);
+  display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2;
+  -webkit-box-orient: vertical; overflow: hidden;
+}
+/* A category with no photograph yet gets the pack mark, not a blank tile. */
+.cattile-ph {
+  position: absolute; inset: 0; display: grid; place-items: center;
+  background: var(--rule-soft);
+}
+.cattile-ph svg { width: 64px; height: 64px; opacity: .3; }
+
+/* ==========================================================================
+   14. PRODUCT DETAIL
+   ========================================================================== */
+
+.pd-head { padding-block: clamp(30px, 4vw, 52px); }
+.pd-short { margin: 0 0 18px; max-width: 54ch; }
+.pd-cta { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 22px; }
+.pd-render { position: relative; }
+/* Says plainly that the photograph is not this pack. */
+.pd-render-note {
+  position: absolute; right: 12px; bottom: 12px; z-index: 2;
+  font-family: var(--f-mono); font-size: .58rem; font-weight: 500;
+  letter-spacing: .13em; text-transform: uppercase; color: var(--slate);
+  background: rgba(255, 255, 255, .92); padding: 5px 10px; border-radius: 100px;
+  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+  box-shadow: inset 0 0 0 1px rgba(214, 224, 236, .9);
+}
+.pd-verify { border-top: 3px solid var(--seal); }
+
+.pd-benefits { list-style: none; margin: 0; padding: 0; }
+.pd-benefits li {
+  display: flex; gap: 11px; align-items: flex-start;
+  padding: 10px 0; border-bottom: 1px solid var(--rule-soft);
+}
+.pd-benefits li:last-child { border-bottom: 0; }
+.pd-benefits svg { flex: none; margin-top: 3px; color: var(--verified); }
+.pd-benefits span { color: var(--slate); }
+
+.page-head { padding-block: clamp(30px, 4vw, 52px); }
+
+/* ==========================================================================
+   15. TOUCH TARGETS — filter chips join the existing rule
+   ========================================================================== */
+@media (pointer: coarse) {
+  .fchip { min-height: 44px; display: inline-flex; align-items: center; }
+  .cat-clear { min-height: 44px; }
+}
+
+/* ==========================================================================
+   16. CONTENT MUST NOT BE CUT
+   --------------------------------------------------------------------------
+   Three places were trimming content rather than laying it out.
+   ========================================================================== */
+
+/* 1. The hero pulled its visual column outside the padding box with negative
+      margins, and .hero sets overflow:hidden for the ruled-paper background —
+      so the bottom of the photograph and the top of the terminal were being
+      clipped. The optical overlap is not worth losing pixels of the image. */
+@media (min-width: 941px) {
+  .hero-visual { margin-block: 0; }
+  .hero-media { margin-bottom: 0; }
+}
+
+/* 2. Composition is the single most important line on a pharmaceutical
+      product card. It was clamped to two lines, which silently truncated the
+      longer formulations — exactly the ones a buyer needs to read. */
+.p-comp {
+  display: block; overflow: visible;
+  -webkit-line-clamp: none; line-clamp: none;
+}
+
+/* 3. The how-we-work plate is a seven-step diagram with labels. Scaled to a
+      phone it becomes unreadable, so below the legibility threshold it holds
+      its size and the frame scrolls. */
+.figure-scroll { max-width: 100%; }
+@media (max-width: 720px) {
+  .figure-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    /* Bleeds to the viewport edges so the scroll affordance is obvious. */
+    margin-inline: calc(var(--gut) * -1);
+    padding-inline: var(--gut);
+  }
+  .figure-scroll .figure-plate { min-width: 620px; }
+}
+
+/* The hero headline sets two lines at display weight; on a narrow phone the
+   longest word must be allowed to break rather than push the page sideways. */
+.hero h1 { overflow-wrap: break-word; }
+
+/* Nothing on the page may scroll the document sideways. `clip` rather than
+   `hidden`: hidden would make the body a scroll container, which silently
+   breaks every position:sticky descendant — the product detail aside and the
+   console's preview pane both rely on it. `clip` contains the overflow
+   without creating a scrollport. */
+body { overflow-x: clip; }
+
+/* ==========================================================================
+   17. BRAND REVAMP — the logo's language, applied
+   --------------------------------------------------------------------------
+   The logo is a blue shield sweeping into a green leaf. Three devices carry
+   that into the interface, and nothing else changes:
+
+     1. the blue→green sweep, as a token (--grad-brand), on the few surfaces
+        that should read as "brand": the top rule, primary buttons, the
+        active nav marker, section eyebrows.
+     2. depth via layered blue shadow instead of flat borders.
+     3. green reserved for confirmation — verified, in stock, a tick. Blue
+        acts, green confirms. That mirrors the logo, where the cross is the
+        subject and the leaf is the assurance around it.
+
+   No content changes. Copy, structure and imagery are untouched.
+   ========================================================================== */
+
+/* ---- navbar lockup ----------------------------------------------------- */
+.brand img {
+  width: auto;
+  height: 38px;
+  display: block;
+  transition: transform .32s var(--ease-lg, cubic-bezier(.22, 1, .36, 1));
+}
+.brand:hover img { transform: scale(1.02); }
+.site-head.scrolled .brand img { height: 33px; }
+@media (max-width: 560px) { .brand img, .site-head.scrolled .brand img { height: 30px; } }
+@media (prefers-reduced-motion: reduce) {
+  .brand img { transition: none; }
+  .brand:hover img { transform: none; }
+}
+
+/* No rule under the header, deliberately. .site-head is a transparent
+   wrapper — the visible header is the floating capsule .head-in — so anything
+   drawn on the wrapper's bottom edge runs the full width of the viewport,
+   detached from the capsule it is supposed to belong to. The glass layer sets
+   border-bottom:0 !important on .site-head for exactly this reason. The
+   capsule signals scroll state through its own background and shadow. */
+
+/* ---- buttons ----------------------------------------------------------- */
+/* Primary carries the sweep. The gradient is on a pseudo-element so the hover
+   swap cross-fades rather than snapping — gradients cannot be transitioned. */
+.btn--seal {
+  position: relative; isolation: isolate; border: 0 !important;
+  background: var(--blue) !important; color: #fff !important;
+  box-shadow: 0 2px 10px -3px rgba(2, 64, 154, .45);
+  transition: box-shadow .26s ease, transform .26s var(--ease-lg, cubic-bezier(.22, 1, .36, 1));
+}
+.btn--seal::before {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  border-radius: inherit; background: var(--grad-brand);
+  opacity: 0; transition: opacity .3s ease;
+}
+.btn--seal:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 22px -8px rgba(2, 64, 154, .55), 0 2px 8px -4px rgba(41, 155, 32, .4);
+}
+.btn--seal:hover::before { opacity: 1; }
+
+.btn--line {
+  border: 1px solid var(--rule) !important;
+  background: var(--card) !important; color: var(--ink) !important;
+  transition: border-color .22s ease, color .22s ease, transform .26s var(--ease-lg, cubic-bezier(.22, 1, .36, 1)),
+              box-shadow .26s ease;
+}
+.btn--line:hover {
+  border-color: var(--blue) !important; color: var(--blue) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px -10px rgba(2, 64, 154, .45);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn--seal, .btn--line { transition: none; }
+  .btn--seal:hover, .btn--line:hover { transform: none; }
+}
+
+/* ---- section eyebrow: the rule becomes the sweep ----------------------- */
+.lab::before {
+  width: 20px; height: 2px; border-radius: 2px;
+  background: var(--grad-brand) !important;
+}
+.sect--ink .lab::before { background: linear-gradient(90deg, #6ED45B, #B7F0A8) !important; }
+
+/* ---- hero -------------------------------------------------------------- */
+/* The ruled-paper background gains a soft brand wash, so the hero reads as
+   the brand's surface rather than as plain stock. Very low opacity: this is
+   a tint, not a gradient panel. */
+.hero {
+  background:
+    radial-gradient(88% 62% at 8% 0%, rgba(2, 64, 154, .055) 0%, transparent 62%),
+    radial-gradient(70% 60% at 100% 12%, rgba(41, 155, 32, .05) 0%, transparent 58%),
+    var(--card);
+}
+/* The headline's second line is the brand green — the logo's own split
+   between a blue word and a green word. */
+.hero h1 em { color: var(--green-dk); }
+
+.hero-media { box-shadow: 0 24px 54px -26px rgba(2, 64, 154, .42), 0 4px 14px -8px rgba(10, 31, 61, .18); }
+
+/* Hero figures: the numeral picks up the brand blue and the rule beneath the
+   row becomes the sweep, so the datum strip is visibly part of the identity. */
+.hero-facts { border-top: 0; position: relative; }
+.hero-facts::before {
+  content: ""; position: absolute; top: 0; inset-inline: 0; height: 2px;
+  border-radius: 2px; background: var(--grad-brand); opacity: .5;
+}
+.fact strong { color: var(--blue); }
+
+/* ---- cards ------------------------------------------------------------- */
+/* Shadows tinted with the brand blue rather than neutral grey — a grey shadow
+   under a blue-tinted paper reads as dirt. */
+.card, .p-card, .cert, .person, .cattile, .trust-tile {
+  box-shadow: 0 2px 10px -6px rgba(10, 31, 61, .16);
+  transition: transform .34s var(--ease-lg, cubic-bezier(.22, 1, .36, 1)),
+              box-shadow .34s ease, border-color .28s ease;
+}
+.card:hover, .p-card:hover, .cattile:hover {
+  box-shadow: 0 20px 40px -22px rgba(2, 64, 154, .34), 0 3px 12px -7px rgba(10, 31, 61, .16);
+}
+
+/* The brand rule on the top of a brand card becomes the sweep. */
+.card--brand::after { background: var(--grad-brand) !important; }
+
+/* ---- product cards ----------------------------------------------------- */
+/* A hairline of the sweep wipes across the card on hover — the one piece of
+   motion that is purely decorative, kept to 2px and 340ms so it registers as
+   polish rather than as an effect. */
+.p-card { overflow: hidden; }
+.p-card .p-thumb::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 2px;
+  background: var(--grad-brand); z-index: 3;
+  transform: scaleX(0); transform-origin: left;
+  transition: transform .34s var(--ease-lg, cubic-bezier(.22, 1, .36, 1));
+}
+.p-card:hover .p-thumb::after { transform: scaleX(1); }
+@media (prefers-reduced-motion: reduce) {
+  .p-card .p-thumb::after { transition: none; }
+}
+
+.p-kind.rx { color: var(--blue); }
+.p-kind.nut { color: var(--green-dk); }
+.p-cat { color: var(--blue); }
+.p-in .go { color: var(--blue); }
+
+/* ---- category tiles ---------------------------------------------------- */
+/* The scrim was a flat green; it now carries the sweep, so the caption sits
+   on the brand rather than on a wash. */
+.cattile::after {
+  background:
+    linear-gradient(180deg, transparent 38%, rgba(4, 23, 58, .78) 100%),
+    linear-gradient(100deg, rgba(2, 64, 154, .34) 0%, rgba(41, 155, 32, .3) 100%) !important;
+}
+
+/* ---- trust tiles ------------------------------------------------------- */
+/* Left intentionally alone. The tile already carries a green inset ring, and
+   a border-image gradient would have been drawn ignoring border-radius,
+   squaring off the 16px corners it is meant to decorate. */
+
+/* ---- filter chips ------------------------------------------------------ */
+.fchip.on {
+  background: var(--blue); border-color: var(--blue);
+  box-shadow: 0 2px 10px -3px rgba(2, 64, 154, .5);
+}
+.fchip:hover { border-color: var(--blue); color: var(--blue); }
+
+/* ---- record rows / spec tables ----------------------------------------- */
+.rrow .k { color: var(--blue); }
+
+/* ---- dark sections ----------------------------------------------------- */
+.sect--ink {
+  background:
+    radial-gradient(70% 80% at 6% 0%, rgba(2, 64, 154, .5) 0%, transparent 60%),
+    radial-gradient(60% 70% at 96% 100%, rgba(31, 122, 24, .3) 0%, transparent 58%),
+    var(--ink);
+}
+
+/* ---- verification is green, actions are blue --------------------------- */
+/* The one semantic rule worth stating: blue acts, green confirms. */
+.term .ok, .verified, .tick { color: var(--green-dk); }
+
+/* ---- scroll-reveal ----------------------------------------------------- */
+/* Deliberately untouched. motion.css already drives the rise from
+   --reveal-rise (16px) through translate3d, which the compositor can handle
+   off the main thread; overriding it here with a plain translateY would drop
+   that for no visual gain. Adjust --reveal-rise in motion.css if it ever
+   needs changing. */
+
+/* ---- selection --------------------------------------------------------- */
+::selection { background: color-mix(in oklab, var(--blue) 18%, transparent); color: var(--ink); }

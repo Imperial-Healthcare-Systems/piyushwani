@@ -1,0 +1,78 @@
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# testing
+/coverage
+*.lcov
+
+# next.js
+/.next/
+/out/
+.next
+next-env.d.ts
+
+# production
+/build
+/dist
+
+# caches
+.turbo
+.swc/
+.eslintcache
+.cache/
+*.tsbuildinfo
+tsconfig.tsbuildinfo
+
+# misc
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+*.pem
+
+# debug / logs
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+lerna-debug.log*
+
+# env files (never commit secrets)
+.env
+.env.*
+!.env.example
+*.local
+
+# vercel / deployment
+.vercel
+.netlify
+
+# editors & IDEs
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json.example
+.idea/
+*.swp
+*.swo
+*~
+*.sublime-workspace
+*.sublime-project
+
+# OS / temp
+tmp/
+temp/
+*.tmp
+*.bak
+*.orig
+
+# claude / local agent state
+.claude/settings.local.json

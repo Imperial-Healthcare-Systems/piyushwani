@@ -1,0 +1,165 @@
+"use client";
+
+import { useState } from "react";
+
+import { PersonIcon, PhotoIcon } from "@/components/icons";
+
+/* Intake form §4: 8 employees to be featured. Names, designations and photos
+   are still to be supplied as a list. */
+const TEAM_EMP = Array.from({ length: 8 }, () => ({
+  n: "[CLIENT: name]",
+  r: "[CLIENT: designation]",
+  d: "[CLIENT: 30–50 word profile]",
+}));
+
+const TEAM_DOC = Array.from({ length: 3 }, () => ({
+  n: "[CLIENT: Dr. name]",
+  r: "[CLIENT: specialisation]",
+  d: "[CLIENT: 40–60 word profile description]",
+  q: ["[CLIENT: qualifications]", "[CLIENT: years experience]", "[CLIENT: affiliation]"],
+  e: '[CLIENT: engagement with Piyushwani — e.g. "Advises on formulation review for the nutraceutical range"]',
+}));
+
+const GALLERY = [
+  "Facility",
+  "Facility",
+  "Team",
+  "Team",
+  "Events",
+  "Manufacturing partner",
+  "Events",
+  "Team",
+];
+
+type Tab = "emp" | "doc" | "gal";
+
+const TABS: { key: Tab; label: string }[] = [
+  { key: "emp", label: "Our Team" },
+  { key: "doc", label: "Associated Doctors" },
+  { key: "gal", label: "Gallery" },
+];
+
+export default function TeamTabs() {
+  const [tab, setTab] = useState<Tab>("emp");
+
+  return (
+    <>
+      <div className="tabs" role="tablist">
+        {TABS.map((t) => (
+          <button
+            key={t.key}
+            role="tab"
+            aria-selected={tab === t.key}
+            className={tab === t.key ? "on" : undefined}
+            onClick={() => setTab(t.key)}
+          >
+            {t.label}
+          </button>
+        ))}
+      </div>
+
+      <div hidden={tab !== "emp"}>
+        <p className="lede" style={{ marginBottom: 26 }}>
+          Piyushwani operates from two offices in Laxmi Nagar, East Delhi, with a
+          team of eight spanning operations, quality documentation, customer
+          support and logistics.
+        </p>
+        <div className="grid g-4">
+          {TEAM_EMP.map((p, i) => (
+            <div className="person" key={i}>
+              <div className="avatar">
+                <PersonIcon />
+              </div>
+              <div className="person-in">
+                <h3>
+                  <span className="ph">{p.n}</span>
+                </h3>
+                <div className="role">
+                  <span className="ph">{p.r}</span>
+                </div>
+                <p>
+                  <span className="ph">{p.d}</span>
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div hidden={tab !== "doc"}>
+        <p className="lede" style={{ marginBottom: 26 }}>
+          We work with practising medical professionals who advise on our product
+          range. We publish their names, qualifications, experience and the
+          nature of their engagement with us in full — because &ldquo;expert
+          approved&rdquo; means nothing if the experts are anonymous.
+        </p>
+        <div className="grid g-3">
+          {TEAM_DOC.map((p, i) => (
+            <div className="person" key={i}>
+              <div className="avatar">
+                <PersonIcon />
+              </div>
+              <div className="person-in">
+                <h3>
+                  <span className="ph">{p.n}</span>
+                </h3>
+                <div className="role">
+                  <span className="ph">{p.r}</span>
+                </div>
+                <p>
+                  <span className="ph">{p.d}</span>
+                </p>
+                <div className="qual">
+                  {p.q.map((q) => (
+                    <span className="ph" key={q}>
+                      {q}
+                    </span>
+                  ))}
+                </div>
+                <div
+                  style={{
+                    marginTop: 12,
+                    paddingTop: 11,
+                    borderTop: "1px solid var(--rule-soft)",
+                  }}
+                >
+                  <div className="lab plain" style={{ fontSize: ".6rem", marginBottom: 5 }}>
+                    Engagement
+                  </div>
+                  <p style={{ fontSize: ".8rem" }}>
+                    <span className="ph">{p.e}</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="note note--warn" style={{ marginTop: 24 }}>
+          <strong>Count and consent still outstanding.</strong> The intake form
+          records the number of associated doctors as &ldquo;TBD&rdquo;.{" "}
+          <strong>Written consent is required.</strong> Publishing a
+          doctor&apos;s photograph, qualifications and affiliation requires their
+          written consent, and their hospital may have its own policy on
+          commercial association. Signed consent should be obtained for each
+          individual before these profiles go live.
+        </div>
+      </div>
+
+      <div hidden={tab !== "gal"}>
+        <p className="lede" style={{ marginBottom: 26 }}>
+          Facility, team, events and manufacturing partners.
+        </p>
+        <div className="gal">
+          {GALLERY.map((c, i) => (
+            <figure key={i}>
+              <PhotoIcon />
+              <figcaption>
+                {c} — <span className="ph">[CLIENT: image]</span>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </>
+  );
+}

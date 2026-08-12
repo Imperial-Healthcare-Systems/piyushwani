@@ -1,0 +1,246 @@
+/* ============================================================
+   PIYUSHWANI — refinement & motion layer
+   ------------------------------------------------------------
+   Loaded after globals.css so it wins on ties. Two jobs:
+
+     1. FIXES   — cascade and layout defects in the ported sheet
+     2. MOTION  — a clinical motion language: steady, precise,
+                  never bouncy. Vital-sign pulses, instrument
+                  traces, documents settling into place.
+
+   Every motion rule is gated behind [data-motion="on"], which a
+   pre-paint script in the layout sets ONLY when the visitor has
+   not asked for reduced motion. No attribute → no animation and
+   no hidden content, so the page is fully legible with motion
+   off, with JavaScript off, or if a chunk fails to load.
+   ============================================================ */
+
+/* ============================================================
+   1. FIXES
+   ============================================================ */
+
+/* ---- header CTA -------------------------------------------------------
+   `.nav a` (0-1-1) outranks `.btn--seal` (0-1-0), so the Verify button was
+   painting slate text on the seal green — dark on dark, ~1.4:1 contrast —
+   and was also inheriting the nav's smaller padding, size and weight. The
+   glass layer then overrode its hover background with !important, flattening
+   it into an ordinary nav link. Restated here at a specificity that wins. */
+.site-head .nav a.head-cta {
+  color: #fff;
+  background: var(--seal) !important;
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: .9rem;
+  letter-spacing: -.005em;
+  padding: 12px 21px;
+  border-radius: 100px !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .34),
+    0 10px 24px -12px rgba(8, 23, 45, .45),
+    0 2px 6px -3px rgba(8, 23, 45, .3) !important;
+}
+.site-head .nav a.head-cta:hover,
+.site-head .nav a.head-cta:focus-visible {
+  color: #fff;
+  background: var(--seal-dk) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .42),
+    0 14px 30px -12px rgba(8, 23, 45, .5),
+    0 3px 8px -3px rgba(8, 23, 45, .34) !important;
+}
+/* In the mobile drawer the nav stacks, so the pill goes full width. */
+@media (max-width: 1000px) {
+  .site-head .nav a.head-cta {
+    justify-content: center;
+    margin-top: 12px;
+  }
+}
+
+/* ---- hero facts -------------------------------------------------------
+   Four figures in a flex row wrapped 3 + 1, leaving "100%" stranded on its
+   own line. A grid keeps them on one rank and folds to 2×2 when narrow. */
+.hero-facts {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, auto));
+  justify-content: start;
+  gap: 24px clamp(18px, 3vw, 34px);
+}
+@media (max-width: 560px) {
+  .hero-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+/* Counting digits must not reflow the row as they tick up. */
+.fact strong { font-variant-numeric: tabular-nums; }
+
+/* ============================================================
+   2. MOTION
+   ============================================================ */
+
+:root {
+  --ease-clinical: cubic-bezier(.22, 1, .36, 1);
+  --reveal-rise: 16px;
+  --reveal-dur: .68s;
+}
+
+/* Visually hidden, still announced. Used to expose the settled headline
+   figures while the counters are mid-run. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---- scroll reveal ----------------------------------------------------
+   Content settles into place the way a form is laid on a desk: a short
+   rise, no overshoot. Stagger is carried in --d, set per element in JS. */
+[data-motion="on"] [data-reveal] {
+  opacity: 0;
+  transform: translate3d(0, var(--reveal-rise), 0);
+  transition:
+    opacity var(--reveal-dur) var(--ease-clinical) var(--d, 0ms),
+    transform var(--reveal-dur) var(--ease-clinical) var(--d, 0ms);
+  will-change: opacity, transform;
+}
+[data-motion="on"] [data-reveal].is-in {
+  opacity: 1;
+  transform: none;
+  will-change: auto;
+}
+
+/* Media panes scale back a touch rather than rising — they read as plates
+   being set down, which suits the photographic content better. */
+[data-motion="on"] .media[data-reveal],
+[data-motion="on"] .hero-media[data-reveal],
+[data-motion="on"] .pd-render[data-reveal] {
+  transform: translate3d(0, 12px, 0) scale(.985);
+}
+[data-motion="on"] .media[data-reveal].is-in,
+[data-motion="on"] .hero-media[data-reveal].is-in,
+[data-motion="on"] .pd-render[data-reveal].is-in {
+  transform: none;
+}
+
+/* The mono rule beside a section label draws itself in — the smallest
+   instrument-like detail on the page. */
+[data-motion="on"] [data-reveal] .lab::before {
+  width: 0;
+  transition: width .5s var(--ease-clinical) calc(var(--d, 0ms) + 140ms);
+}
+[data-motion="on"] [data-reveal].is-in .lab::before { width: 16px; }
+
+/* ---- vital-sign pulse -------------------------------------------------
+   The terminal's status dot beats like a monitor: a strong systolic beat,
+   a lighter second beat, then rest. Not a generic fade in and out. */
+@keyframes vitals {
+  0%, 62%, 100% { transform: scale(1);    box-shadow: 0 0 0 3px rgba(31, 122, 24, .20); }
+  6%            { transform: scale(1.42); box-shadow: 0 0 0 6px rgba(31, 122, 24, .34); }
+  14%           { transform: scale(1);    box-shadow: 0 0 0 3px rgba(31, 122, 24, .20); }
+  22%           { transform: scale(1.20); box-shadow: 0 0 0 5px rgba(31, 122, 24, .26); }
+  30%           { transform: scale(1);    box-shadow: 0 0 0 3px rgba(31, 122, 24, .20); }
+}
+[data-motion="on"] .term-top .dot { animation: vitals 2.8s var(--ease-clinical) infinite; }
+
+/* ---- ECG trace --------------------------------------------------------
+   A live rhythm strip in the terminal header. Two copies of one beat sit
+   end to end and the group slides exactly one beat width, so the loop is
+   seamless with no visible seam or restart. */
+.term-top { position: relative; }
+.ecg {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 78px;
+  height: 20px;
+  opacity: .5;
+  pointer-events: none;
+}
+.ecg path {
+  fill: none;
+  stroke: var(--verified);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+@keyframes ecg-roll { to { transform: translateX(-60px); } }
+[data-motion="on"] .ecg g { animation: ecg-roll 2.8s linear infinite; }
+/* Without motion the strip would sit frozen mid-beat, so hide it entirely. */
+.ecg { display: none; }
+[data-motion="on"] .ecg { display: block; }
+
+/* ---- QR scan sweep ----------------------------------------------------
+   A reader's laser passing over the pack on the verification page. */
+.scan { position: relative; }
+.scan::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  z-index: 3;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent, var(--verified) 22%, #8FF0CE 50%, var(--verified) 78%, transparent);
+  box-shadow: 0 0 14px 2px rgba(31, 122, 24, .55);
+  opacity: 0;
+}
+@keyframes scan-sweep {
+  0%        { top: 4%;  opacity: 0; }
+  10%       { opacity: .95; }
+  85%       { opacity: .95; }
+  100%      { top: 95%; opacity: 0; }
+}
+[data-motion="on"] .scan::after { animation: scan-sweep 3.6s var(--ease-clinical) infinite; }
+
+/* ---- verification record entrance -------------------------------------
+   The result card arrives as a single considered movement. The seal inside
+   it already draws its own ring and tick. */
+@keyframes record-in {
+  from { opacity: 0; transform: translate3d(0, 12px, 0) scale(.988); }
+  to   { opacity: 1; transform: none; }
+}
+[data-motion="on"] .rec { animation: record-in .52s var(--ease-clinical) both; }
+
+/* ---- interaction polish ----------------------------------------------- */
+
+/* Category tiles lift and their caption steps forward with them. */
+[data-motion="on"] .cattile .cap {
+  transition: transform .45s var(--ease-clinical);
+}
+[data-motion="on"] .cattile:hover .cap { transform: translateY(-3px); }
+
+/* Record rows warm slightly on hover — useful on the dense spec tables. */
+.rrow { transition: background .25s ease; }
+.rrow:hover { background: rgba(2, 64, 154, .022); }
+
+/* The arrow in a ghost link travels on hover. */
+.btn--ghost { transition: gap .3s var(--ease-clinical); }
+
+/* Product card thumbnails already scale; ease their caption too. */
+.p-in .go { transition: transform .35s var(--ease-clinical); display: inline-block; }
+.p-card:hover .p-in .go { transform: translateX(4px); }
+
+/* ---- reduced motion ---------------------------------------------------
+   Belt and braces: the pre-paint script already withholds [data-motion],
+   so these should never be reachable. Kept so that a visitor who switches
+   the OS setting mid-session is covered without a reload. */
+@media (prefers-reduced-motion: reduce) {
+  [data-motion="on"] [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  [data-motion="on"] [data-reveal] .lab::before { width: 16px; transition: none; }
+  [data-motion="on"] .term-top .dot,
+  [data-motion="on"] .ecg g,
+  [data-motion="on"] .scan::after,
+  [data-motion="on"] .rec {
+    animation: none !important;
+  }
+  [data-motion="on"] .scan::after { display: none; }
+}

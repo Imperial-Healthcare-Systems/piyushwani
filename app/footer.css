@@ -11,22 +11,27 @@
    no image request beyond the logo itself.
 
    Three bands: identity + navigation, contact + closing action, legal base.
+
+   Sized to stay out of the way. The first cut of this footer ran 774px on
+   desktop and 1603px on a 360px phone — half the length of a short page. The
+   metrics below are deliberately tight: small type, small icons, and padding
+   that scales down hard on narrow screens, because a footer is a place to
+   leave from, not a second homepage.
    ========================================================================== */
 
 .pf {
   position: relative;
   isolation: isolate;
   color: #C3D6EC;
-  font-size: .85rem;
+  font-size: .82rem;
   background:
     radial-gradient(110% 80% at 88% 0%, rgba(41, 155, 32, .16) 0%, transparent 56%),
     radial-gradient(120% 90% at 8% 0%, rgba(1, 136, 217, .16) 0%, transparent 58%),
     linear-gradient(172deg, var(--blue) 0%, var(--blue-dk) 46%, #04173A 100%);
 }
 
-/* The "molecular" motif from the reference: a sparse field of nodes, drawn as
-   two offset dot grids so it reads as a lattice rather than wallpaper. Sits
-   behind everything and takes no pointer events. */
+/* The "molecular" motif: a sparse field of nodes, drawn as two offset dot
+   grids so it reads as a lattice rather than wallpaper. */
 .pf::before {
   content: "";
   position: absolute;
@@ -72,13 +77,13 @@
    underscore bar the reference layout puts under every column title. */
 .pf-col h2,
 .pf-blk h2 {
-  margin: 0 0 15px;
-  padding-bottom: 9px;
+  margin: 0 0 10px;
+  padding-bottom: 6px;
   position: relative;
   font-family: var(--f-mono);
-  font-size: .595rem;
+  font-size: .565rem;
   font-weight: 500;
-  letter-spacing: .17em;
+  letter-spacing: .16em;
   text-transform: uppercase;
   color: #6ED45B;
 }
@@ -88,7 +93,7 @@
   position: absolute;
   left: 0;
   bottom: 0;
-  width: 30px;
+  width: 26px;
   height: 2px;
   border-radius: 2px;
   background: #6ED45B;
@@ -99,9 +104,9 @@
 
 .pf-main {
   display: grid;
-  grid-template-columns: minmax(0, 1.05fr) minmax(0, 2.65fr);
-  gap: clamp(28px, 4vw, 60px);
-  padding-block: clamp(34px, 4vw, 52px) clamp(28px, 3.4vw, 40px);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2.25fr);
+  gap: clamp(20px, 3vw, 44px);
+  padding-block: clamp(22px, 2.6vw, 32px) clamp(18px, 2.2vw, 26px);
 }
 
 /* The logo is the deep brand blue on transparent, so it needs a light plate
@@ -111,61 +116,63 @@
 .pf-brand {
   display: inline-block;
   border-bottom: 0 !important;
-  margin-bottom: 16px;
-  padding: 11px 15px;
-  border-radius: 10px;
+  margin-bottom: 11px;
+  padding: 7px 11px;
+  border-radius: 8px;
   background: #fff;
-  box-shadow: 0 1px 0 rgba(255, 255, 255, .5) inset, 0 6px 20px rgba(2, 16, 44, .3);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, .5) inset, 0 4px 14px rgba(2, 16, 44, .28);
   transition: transform .28s cubic-bezier(.2, .7, .2, 1), box-shadow .28s ease;
 }
 .pf-brand:hover {
   transform: translateY(-1px);
-  box-shadow: 0 1px 0 rgba(255, 255, 255, .5) inset, 0 10px 26px rgba(2, 16, 44, .38);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, .5) inset, 0 8px 20px rgba(2, 16, 44, .36);
 }
 .pf-brand img {
   display: block;
-  width: 202px;
+  width: 158px;
   height: auto;
 }
 
 .pf-blurb {
-  margin: 0 0 20px;
-  max-width: 36ch;
-  font-size: .82rem;
-  line-height: 1.65;
+  margin: 0 0 13px;
+  max-width: 34ch;
+  font-size: .785rem;
+  line-height: 1.55;
   color: #A8C2DE;
 }
 
 /* ---- trust marks ---- */
 
-/* Four to a row on desktop, matching the reference. The icon sits in a
-   bordered tile and the label runs beneath it, so the row reads as a set of
-   marks rather than a list of features. */
+/* Four to a row, and they stay four to a row at every width — dropping them
+   to a 2x2 on a phone bought nothing and cost a whole extra row of height.
+   At 36px a tile plus gaps the set is ~170px wide, which fits a 320px screen
+   with room to spare. */
 .pf-marks {
   list-style: none;
   margin: 0;
   padding: 0;
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 12px 10px;
+  gap: 7px 6px;
+  max-width: 310px;
 }
 .pf-marks li {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   text-align: center;
-  font-size: .655rem;
-  line-height: 1.32;
-  letter-spacing: .015em;
+  font-size: .59rem;
+  line-height: 1.28;
+  letter-spacing: .01em;
   color: #B6CDE6;
 }
 .pf-mark-i {
   display: grid;
   place-items: center;
-  width: 46px;
-  height: 46px;
-  border-radius: 9px;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
   border: 1px solid rgba(183, 240, 168, .3);
   background: rgba(110, 212, 91, .07);
   color: #8FE07C;
@@ -176,14 +183,14 @@
   background: rgba(110, 212, 91, .14);
   transform: translateY(-2px);
 }
-.pf-mark-i svg { width: 22px; height: 22px; }
+.pf-mark-i svg { width: 18px; height: 18px; }
 
 /* ---- link columns ---- */
 
 .pf-nav {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: clamp(18px, 2.4vw, 34px);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(14px, 2vw, 28px);
 }
 .pf-col ul {
   list-style: none;
@@ -191,21 +198,21 @@
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 9px;
-  font-size: .815rem;
+  gap: 6px;
+  font-size: .785rem;
 }
-/* The chevron the reference puts before every link. Drawn as a rotated border
-   corner so it costs no markup and no icon file. */
+/* The chevron before every link, drawn as a rotated border corner so it costs
+   no markup and no icon file. */
 .pf-col ul a {
   display: inline-block;
   position: relative;
-  padding-left: 15px;
+  padding-left: 14px;
 }
 .pf-col ul a::before {
   content: "";
   position: absolute;
   left: 1px;
-  top: .48em;
+  top: .46em;
   width: 4.5px;
   height: 4.5px;
   border-top: 1.5px solid #6ED45B;
@@ -223,9 +230,9 @@
 
 .pf-connect {
   display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr) minmax(0, 1.1fr);
-  gap: clamp(24px, 3.4vw, 54px);
-  padding-block: clamp(26px, 3.2vw, 38px);
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  gap: clamp(16px, 2.6vw, 40px);
+  padding-block: clamp(16px, 2vw, 24px);
   border-top: 1px solid rgba(183, 240, 168, .16);
 }
 
@@ -235,46 +242,57 @@
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 13px;
-  font-size: .815rem;
+  gap: 9px;
+  font-size: .785rem;
+}
+/* Wide enough for the block to run two-up: four rows in one column was the
+   tallest thing in this band, and the address is the only entry that needs
+   the full measure. */
+@media (min-width: 941px) {
+  .pf-contact {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px clamp(14px, 1.6vw, 24px);
+    align-content: start;
+  }
 }
 .pf-contact li {
   display: grid;
-  grid-template-columns: 34px minmax(0, 1fr);
+  grid-template-columns: 28px minmax(0, 1fr);
   align-items: start;
-  gap: 11px;
+  gap: 9px;
 }
 .pf-contact address,
 .pf-contact p {
   font-style: normal;
   margin: 0;
-  line-height: 1.55;
+  line-height: 1.5;
   color: #B6CDE6;
   max-width: 30ch;
 }
-.pf-sup { color: #B6CDE6; line-height: 1.55; }
+.pf-sup { color: #B6CDE6; line-height: 1.5; }
 
-/* Icon chip. Circular, hairline ring — the reference's contact glyphs. */
+/* Icon chip. Circular, hairline ring. */
 .pf-ci {
   display: grid;
   place-items: center;
-  width: 34px;
-  height: 34px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   border: 1px solid rgba(183, 240, 168, .28);
   background: rgba(110, 212, 91, .07);
   color: #8FE07C;
   flex: none;
 }
-.pf-ci svg { width: 17px; height: 17px; }
+.pf-ci svg { width: 14px; height: 14px; }
 
 /* ---- closing action ---- */
 
 .pf-cta p {
-  margin: 0 0 16px;
-  max-width: 34ch;
-  font-size: .8rem;
-  line-height: 1.6;
+  margin: 0 0 12px;
+  max-width: 32ch;
+  font-size: .775rem;
+  line-height: 1.55;
   color: #A8C2DE;
 }
 .pf-btn {
@@ -282,15 +300,15 @@
   align-items: center;
   justify-content: center;
   gap: .5em;
-  min-height: 42px;
-  padding: 10px 20px;
+  min-height: 38px;
+  padding: 8px 17px;
   border-radius: 100px;
   background: #6ED45B;
   color: #08260A !important;
   border-bottom: 0 !important;
   font-family: var(--f-display);
   font-weight: 700;
-  font-size: .83rem;
+  font-size: .8rem;
   white-space: nowrap;
   transition: background .2s ease, transform .28s cubic-bezier(.2, .7, .2, 1);
 }
@@ -305,17 +323,17 @@
 /* ---------------------------------------------------------- band 3: base ---- */
 
 .pf-base {
-  padding-block: 18px clamp(20px, 2.4vw, 28px);
+  padding-block: 12px clamp(14px, 1.8vw, 20px);
   border-top: 1px solid rgba(183, 240, 168, .16);
 }
 
 /* The regulatory line is the quietest thing in the footer but must stay
    legible; it is set at a comfortable measure rather than run edge to edge. */
 .pf-disc {
-  margin: 0 0 15px;
-  max-width: 92ch;
-  font-size: .73rem;
-  line-height: 1.66;
+  margin: 0 0 11px;
+  max-width: 96ch;
+  font-size: .705rem;
+  line-height: 1.58;
   color: #A3BCD8;
 }
 
@@ -324,10 +342,10 @@
   display: grid;
   grid-template-columns: auto 1fr auto;
   align-items: center;
-  gap: 10px clamp(16px, 2.5vw, 32px);
-  padding-top: 15px;
+  gap: 8px clamp(14px, 2.2vw, 28px);
+  padding-top: 11px;
   border-top: 1px solid rgba(183, 240, 168, .1);
-  font-size: .75rem;
+  font-size: .725rem;
   color: #A3BCD8;
 }
 .pf-copy { color: #A3BCD8; }
@@ -336,33 +354,33 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 4px clamp(12px, 1.8vw, 20px);
+  gap: 3px clamp(10px, 1.6vw, 18px);
   flex-wrap: wrap;
 }
-.pf-legal a { font-size: .75rem; }
+.pf-legal a { font-size: .725rem; }
 /* A pipe between the legal links, drawn rather than typed so it cannot be
    selected or read out by a screen reader. */
 .pf-legal a + a::before {
   content: "";
   display: inline-block;
   width: 1px;
-  height: 11px;
+  height: 10px;
   background: currentColor;
   opacity: .3;
-  margin-right: clamp(12px, 1.8vw, 20px);
+  margin-right: clamp(10px, 1.6vw, 18px);
   vertical-align: -1px;
 }
 
 .pf-end {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
   justify-self: end;
 }
 
 /* Build credit. Sits quieter than the legal links — it is an attribution,
    not navigation — and only the studio name is the link. */
-.pf-credit { margin: 0; font-size: .755rem; color: #9FBAD6; white-space: nowrap; }
+.pf-credit { margin: 0; font-size: .725rem; color: #9FBAD6; white-space: nowrap; }
 .pf-credit a { font-size: inherit; color: #A8C2DE; }
 .pf-credit a:hover { color: #fff; }
 
@@ -371,8 +389,8 @@
 .pf-top {
   display: grid;
   place-items: center;
-  width: 38px;
-  height: 38px;
+  width: 32px;
+  height: 32px;
   flex: none;
   border-radius: 50%;
   border: 1px solid rgba(183, 240, 168, .3) !important;
@@ -386,57 +404,63 @@
   color: #B7F0A8;
   transform: translateY(-2px);
 }
-.pf-top svg { width: 17px; height: 17px; }
+.pf-top svg { width: 15px; height: 15px; }
 
 /* ------------------------------------------------------------ responsive ---- */
 
 /* The nav columns break to two-up before the identity block gives up its own
    column — four columns of links are the first thing that stops fitting. */
 @media (max-width: 1080px) {
-  .pf-main { grid-template-columns: minmax(0, 1fr) minmax(0, 1.8fr); }
-  .pf-nav { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 20px; }
+  .pf-main { grid-template-columns: minmax(0, 1fr) minmax(0, 1.75fr); }
+  .pf-nav { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 16px; }
 }
 
-@media (max-width: 940px) {
-  .pf-connect { grid-template-columns: 1fr 1fr; }
-  .pf-cta { grid-column: 1 / -1; }
-  .pf-cta p { max-width: none; }
-}
-
-@media (max-width: 820px) {
-  .pf-main { grid-template-columns: 1fr; gap: 30px; }
+/* The identity block keeps its own column down to a genuine phone width. It
+   used to give up at 820px, which stacked it above the nav on every tablet
+   and added ~180px of height for no benefit — at 768 the nav still has ~480px
+   to work with, which is ample for two columns. */
+@media (max-width: 700px) {
+  .pf-main { grid-template-columns: 1fr; gap: 20px; }
   .pf-blurb { max-width: none; }
-  .pf-marks { max-width: 340px; }
 }
 
+/* The base stops fitting on one line. Legal takes its own row, then the
+   copyright and the credit/back-to-top share the next one — three stacked
+   rows would add ~40px for nothing. */
 @media (max-width: 860px) {
-  .pf-base-row { grid-template-columns: 1fr; justify-items: start; gap: 12px; }
-  .pf-legal { justify-content: flex-start; }
-  .pf-end { justify-self: start; }
+  .pf-base-row {
+    grid-template-columns: 1fr auto;
+    justify-items: start;
+    gap: 9px 14px;
+  }
+  .pf-legal { grid-column: 1 / -1; order: -1; justify-content: flex-start; }
+  .pf-end { justify-self: end; }
 }
 
+/* Below this the contact blocks stop fitting two-up. Everything stacks, so
+   the paddings come down again to keep the stack short. */
 @media (max-width: 560px) {
-  .pf-connect { grid-template-columns: 1fr; gap: 26px; }
+  .pf-connect { grid-template-columns: 1fr; gap: 18px; }
   .pf-contact address, .pf-contact p { max-width: none; }
-  .pf-brand img { width: 176px; }
-}
-
-/* Two columns of links still fit a phone; collapsing them to one column each
-   would make the footer taller than the page it closes. */
-@media (max-width: 420px) {
-  .pf-marks { grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: none; }
+  .pf-brand img { width: 146px; }
+  .pf-main { padding-block: 20px 16px; }
   .pf-btn { width: 100%; }
 }
 
+@media (max-width: 380px) {
+  .pf-marks { gap: 6px 4px; }
+  .pf-mark-i { width: 33px; height: 33px; }
+  .pf-mark-i svg { width: 16px; height: 16px; }
+  .pf-marks li { font-size: .555rem; }
+}
+
+/* Touch targets. Spacing goes on the gap rather than into the line box —
+   growing the line box is what makes a footer twice as tall on a phone. Even
+   so this is the single most expensive rule in the file (~100px on a 360px
+   screen), so it buys the tap room and nothing more. */
 @media (pointer: coarse) {
-  .pf-col ul a, .pf-contact a, .pf-legal a, .pf-credit a {
-    display: inline-flex;
-    align-items: center;
-    min-height: 44px;
-  }
-  /* The chevron is absolutely positioned against the link box, which just
-     grew to 44px — re-centre it rather than leaving it pinned to the top. */
-  .pf-col ul a::before { top: 50%; margin-top: -3px; }
+  .pf-col ul { gap: 8px; }
+  .pf-col ul a, .pf-contact a, .pf-legal a { padding-block: 2px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

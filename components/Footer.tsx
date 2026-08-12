@@ -35,11 +35,18 @@ import {
        a public site only invites the wrong traffic.
    ========================================================================== */
 
+/* Three columns, not four. The Support column duplicated destinations the
+   rest of the footer already carried — Verify a Batch is the closing action
+   below and sits in the header besides, and Contact/Request a Quote both
+   resolve to /contact. Its one unique entry, the Grievance Officer, moved to
+   the legal row where a compliance contact belongs. */
 const COMPANY: [string, string][] = [
   ["/about", "About Us"],
   ["/leadership", "Our Leadership"],
   ["/team", "Our Team"],
   ["/certifications", "Certifications"],
+  ["/contact", "Contact Us"],
+  ["/contact", "Request a Quote"],
 ];
 
 const PRODUCTS: [string, string][] = [
@@ -62,17 +69,11 @@ const SHOP: [string, string][] = [
   [WAANIGO_SHOP, "All Products"],
 ];
 
-const SUPPORT: [string, string][] = [
-  ["/contact", "Contact Us"],
-  ["/contact", "Request a Quote"],
-  ["/verify", "Verify a Batch"],
-  [`mailto:${CMS["legal.grievance_email"]}`, "Grievance Officer"],
-];
-
 const LEGAL: [string, string][] = [
   ["/privacy", "Privacy Policy"],
   ["/terms", "Terms of Use"],
   ["/disclaimer", "Disclaimer"],
+  [`mailto:${CMS["legal.grievance_email"]}`, "Grievance Officer"],
 ];
 
 /* The four things this company asks to be judged on. Each is a claim the site
@@ -193,9 +194,8 @@ export default function Footer() {
             </Link>
 
             <p className="pf-blurb">
-              Pharmaceutical marketing and distribution across three brands —
-              Piyushwani, P-Wanicure and WaaniGo — with every batch traceable
-              from the pack it was sold in.
+              Pharmaceutical marketing and distribution across Piyushwani,
+              P-Wanicure and WaaniGo — every batch traceable from the pack.
             </p>
 
             <ul className="pf-marks">
@@ -214,7 +214,6 @@ export default function Footer() {
             <Col title="Company" links={COMPANY} />
             <Col title="Products" links={PRODUCTS} />
             <Col title="Shop on WaaniGo" links={SHOP} external />
-            <Col title="Support" links={SUPPORT} />
           </div>
         </div>
 
@@ -249,15 +248,9 @@ export default function Footer() {
                 </span>
                 <a href={`mailto:${email}`}>{email}</a>
               </li>
-            </ul>
-          </section>
-
-          {/* The reference layout puts social icons here. This company has no
-              declared social accounts, so the slot carries opening hours — a
-              fact we hold — rather than four links to nowhere. */}
-          <section className="pf-blk">
-            <h2>Opening Hours</h2>
-            <ul className="pf-contact">
+              {/* Hours and the support line used to be a second block with its
+                  own heading. Folding them in here drops a heading, a column
+                  and a band gap without losing a single fact. */}
               <li>
                 <span className="pf-ci">
                   <Icon>
@@ -265,23 +258,14 @@ export default function Footer() {
                     <path d="M12 7v5.2l3.2 1.9" />
                   </Icon>
                 </span>
-                <p>{hours}</p>
-              </li>
-              <li>
-                <span className="pf-ci">
-                  <Icon>
-                    <path d="M12 2a7 7 0 0 0-7 7v4.5" />
-                    <rect x="2.5" y="12.5" width="4" height="6" rx="1.6" />
-                    <rect x="17.5" y="12.5" width="4" height="6" rx="1.6" />
-                    <path d="M19 18.5v.8a2.7 2.7 0 0 1-2.7 2.7H13" />
-                  </Icon>
-                </span>
-                <span className="pf-sup">
-                  Customer support{" "}
+                <p>
+                  {hours}
+                  <br />
+                  Support{" "}
                   <a href={`tel:${supportPhone.replace(/\s/g, "")}`}>
                     {supportPhone}
                   </a>
-                </span>
+                </p>
               </li>
             </ul>
           </section>
@@ -289,8 +273,8 @@ export default function Footer() {
           <section className="pf-blk pf-cta">
             <h2>Verify a Pack</h2>
             <p>
-              Every pack carries a QR code and a batch record. Check yours
-              against the manufacturing data before you use it.
+              Every pack carries a QR code. Check yours against its
+              manufacturing record.
             </p>
             <Link className="pf-btn" href="/verify">
               Verify a batch

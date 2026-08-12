@@ -260,6 +260,38 @@
 .fact strong { font-size: 1.62rem; letter-spacing: -.028em; color: var(--ink); }
 .fact span { margin-top: 3px; display: block; }
 
+/* ---- hero on a phone --------------------------------------------------- */
+/* The figures strip is the row that carries the proof — products, brands,
+   registrations, traceability — and on a phone it sat at 782px from the top
+   of the document. A phone browser's visible area is its viewport minus the
+   URL bar, so on a 390x844 handset that is roughly 750px: the strip landed
+   just below the fold and the hero read as cut off.
+
+   globals.css sets .hero-grid padding-block to a flat 40px under 940px, which
+   overrode the tightened desktop value, so it is re-set here first. */
+@media (max-width: 940px) {
+  .hero-grid { padding-block: 26px 30px; }
+}
+
+@media (max-width: 560px) {
+  /* .h-xl bottoms out at 2.4rem, which is four lines of headline on a 390px
+     screen. Scoped to the hero so the rest of the type scale is untouched. */
+  .hero h1 { font-size: clamp(1.95rem, 8.2vw, 2.3rem); margin: 9px 0 11px; }
+  .hero .lede { font-size: 1rem; line-height: 1.5; }
+  .hero-actions { margin-top: 16px; gap: 8px; }
+
+  /* Four facts wrapped unevenly as a flex row. A 2x2 grid is the same
+     information in a predictable block, and a shorter one. */
+  .hero-facts {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px 16px;
+    margin-top: 16px;
+    padding-top: 14px;
+  }
+  .fact strong { font-size: 1.32rem; }
+}
+
 /* ==========================================================================
    4. SECTION RHYTHM & TYPOGRAPHY
    ========================================================================== */

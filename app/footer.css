@@ -109,28 +109,33 @@
   padding-block: clamp(22px, 2.6vw, 32px) clamp(18px, 2.2vw, 26px);
 }
 
-/* The logo is the deep brand blue on transparent, so it needs a light plate
-   to sit on — against this navy ground the "PIYUSH" half would otherwise be
-   nearly invisible. Recolouring the artwork would be the alternative, and
-   repainting a brand mark is not a stylesheet's decision to make. */
+/* The logo sits straight on the footer ground, no plate behind it.
+   That needs one adjustment to work: the artwork's "PIYUSH" is #02409A, the
+   deep brand blue, and the top of this footer IS that same blue — dropped in
+   as-is the word would not be low-contrast, it would be invisible. So the
+   lockup is knocked out to white. brightness(0) flattens every opaque pixel
+   to black and invert(1) turns it white; the alpha channel is untouched, so
+   the transparent ground stays transparent and the shape stays exact.
+
+   The trade is colour: the green "WANI" and the leaf go white along with the
+   rest. A purpose-made white version of the artwork would keep the green and
+   is worth dropping in if one exists — swap the filter for that file and
+   nothing else here changes. */
 .pf-brand {
   display: inline-block;
   border-bottom: 0 !important;
   margin-bottom: 11px;
-  padding: 7px 11px;
-  border-radius: 8px;
-  background: #fff;
-  box-shadow: 0 1px 0 rgba(255, 255, 255, .5) inset, 0 4px 14px rgba(2, 16, 44, .28);
-  transition: transform .28s cubic-bezier(.2, .7, .2, 1), box-shadow .28s ease;
+  transition: opacity .28s ease, transform .28s cubic-bezier(.2, .7, .2, 1);
 }
 .pf-brand:hover {
+  opacity: .86;
   transform: translateY(-1px);
-  box-shadow: 0 1px 0 rgba(255, 255, 255, .5) inset, 0 8px 20px rgba(2, 16, 44, .36);
 }
 .pf-brand img {
   display: block;
-  width: 158px;
+  width: 172px;
   height: auto;
+  filter: brightness(0) invert(1);
 }
 
 .pf-blurb {
@@ -442,7 +447,7 @@
 @media (max-width: 560px) {
   .pf-connect { grid-template-columns: 1fr; gap: 18px; }
   .pf-contact address, .pf-contact p { max-width: none; }
-  .pf-brand img { width: 146px; }
+  .pf-brand img { width: 156px; }
   .pf-main { padding-block: 20px 16px; }
   .pf-btn { width: 100%; }
 }
@@ -468,4 +473,11 @@
   .pf-btn:hover, .pf-brand:hover, .pf-marks li:hover .pf-mark-i, .pf-top:hover {
     transform: none;
   }
+}
+
+/* Forced-colours mode replaces the footer ground with the user's own
+   background, so a white-knocked logo can land white-on-white. Drop the
+   filter and let the artwork's real colours through. */
+@media (forced-colors: active) {
+  .pf-brand img { filter: none; }
 }

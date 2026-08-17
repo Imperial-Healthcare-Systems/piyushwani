@@ -40,8 +40,17 @@ import { CAT_TILES, PRODUCTS } from "@/lib/products";
 export type { AdminProduct, Category };
 export { slugify };
 
-const PRODUCTS_KEY = "pw_admin_products_v1";
-const CATEGORIES_KEY = "pw_admin_categories_v1";
+/* Bumped to v2 when the category set changed shape: Capsules removed, Drops
+   added, and the running order reset to Syrups / Nutraceuticals / Drops /
+   Tablets. A stored blob wins over the seed, so without the bump any browser
+   that had ever opened the console would keep serving the old four categories
+   and never show Drops at all. The bump makes those browsers fall back to the
+   new seed.
+
+   Only the catalogue keys move. Site content is unaffected by this change, so
+   CONTENT_KEY stays at v1 and any copy edited in the console survives. */
+const PRODUCTS_KEY = "pw_admin_products_v2";
+const CATEGORIES_KEY = "pw_admin_categories_v2";
 const CONTENT_KEY = "pw_site_content_v1";
 
 /** Simulated latency so the console's loading states are real, not decorative. */
@@ -165,11 +174,21 @@ export const CONTENT_FIELDS: {
    SEEDING
    ========================================================================== */
 
-/** Maps the public catalogue's dosage form onto a seed category. */
+/* Maps the public catalogue's dosage form onto a seed category. Must only
+   ever return a name present in CAT_TILES — a product filed under a category
+   that does not exist is invisible, because the products page offers a filter
+   only for categories that have something in them.
+
+   Drops is tested before the liquid forms: a drop is a solution, so the
+   broader test would swallow it. There is no longer a Capsules shelf, and
+   nothing in the catalogue needs one — the sole capsule form is the Omega-3
+   softgel, which is a nutraceutical and files above on kind. Anything else in
+   a capsule would land in Tablets, which is wrong but visible; the console
+   can refile it, and an invisible product could not be found to fix. */
 function seedCategoryFor(form: string, kind: string): string {
   if (kind === "nut") return "Nutraceuticals";
   const f = form.toLowerCase();
-  if (f.includes("capsule") || f.includes("softgel")) return "Capsules";
+  if (f.includes("drop")) return "Drops";
   if (f.includes("solution") || f.includes("syrup")) return "Syrups";
   return "Tablets";
 }

@@ -53,13 +53,13 @@ const KIND_TO_CATEGORY: Record<"rx" | "nut", WaanigoCategory> = {
 };
 
 /* This site's own category tiles (lib/products.ts CAT_TILES) onto WaaniGo's
-   shelves. Tablets/Capsules/Syrups are dosage forms rather than shelves, and
-   all three sit under healthcare on the storefront. */
+   shelves. Syrups/Drops/Tablets are dosage forms rather than shelves, and all
+   three sit under healthcare on the storefront. */
 const TILE_TO_CATEGORY: Record<string, WaanigoCategory> = {
-  Tablets: "healthcare",
-  Capsules: "healthcare",
   Syrups: "healthcare",
   Nutraceuticals: "nutraceuticals",
+  Drops: "healthcare",
+  Tablets: "healthcare",
 };
 
 /* Products whose WaaniGo slug is not slugify(name). Empty today — every

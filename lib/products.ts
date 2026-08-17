@@ -20,6 +20,11 @@ export const PRODUCTS: Product[] = [
   { n: "Oral Rehydration Salts IP", c: "Sodium chloride · Potassium chloride · Sodium citrate · Dextrose", f: "Powder", t: "rx" },
   { n: "Pantoprazole 40 mg Tablets IP", c: "Pantoprazole Sodium IP eq. to Pantoprazole 40 mg", f: "Tablet", t: "rx" },
   { n: "Povidone-Iodine 5% Solution IP", c: "Povidone-Iodine IP 5% w/v", f: "Solution", t: "rx" },
+  /* Placeholder for the Drops category. A category with no live product is
+     filtered out of the products page tabs (see ProductGrid's `available`),
+     so the shelf needs one entry to exist at all. The composition is a gap
+     chip rather than an invented formula. */
+  { n: "Nasal Drops", c: "[CLIENT: full composition]", f: "Drops", t: "rx" },
   { n: "Vitamin D3 60000 IU Sachets", c: "Cholecalciferol 60000 IU", f: "Sachet", t: "nut" },
   { n: "Calcium Carbonate & Vitamin D3 Tablets", c: "Calcium Carbonate 1250 mg · Cholecalciferol 250 IU", f: "Tablet", t: "nut" },
   { n: "Multivitamin & Multimineral Tablets", c: "[CLIENT: full composition]", f: "Tablet", t: "nut" },
@@ -28,12 +33,23 @@ export const PRODUCTS: Product[] = [
   { n: "Omega-3 Fatty Acid Softgels", c: "Fish oil concentrate providing EPA & DHA", f: "Softgel", t: "nut" },
 ];
 
-/** Image-led category tiles: [label, image key, alt text] */
+/* Image-led category tiles: [label, image key, alt text]
+   --------------------------------------------------------------------------
+   Order is the running order everywhere the categories appear — the home
+   page grid, the products page grid and the footer's Products column all read
+   this array, and it also seeds each Category's `order` field (see
+   seedCategories in lib/catalogue.ts), which is what the console sorts by.
+
+   Drops has no photograph yet. Its image key is deliberately empty rather
+   than pointed at one of the others: CatGrid falls back to a pack icon when a
+   category has no asset, so the tile reads as a photo still to come instead of
+   showing capsules or a syrup bottle and calling them drops. Drop a
+   prod-drops entry into lib/images.ts and name it here when the shot lands. */
 export const CAT_TILES: [string, string, string][] = [
-  ["Tablets", "prod-tablets", "Piyushwani tablet pack and blister"],
-  ["Capsules", "prod-capsules", "Piyushwani capsule pack and blister"],
   ["Syrups", "prod-syrups", "Piyushwani syrup bottle and carton"],
   ["Nutraceuticals", "prod-nutraceuticals", "Piyushwani nutraceutical bottle and carton"],
+  ["Drops", "", "Piyushwani drops bottle and carton"],
+  ["Tablets", "prod-tablets", "Piyushwani tablet pack and blister"],
 ];
 
 /* The admin console is shared between sites, so each site supplies these

@@ -808,11 +808,29 @@ body { overflow-x: clip; }
    squaring off the 16px corners it is meant to decorate. */
 
 /* ---- filter chips ------------------------------------------------------ */
+/* Hover inverts the chip — blue ground, white label — instead of only
+   recolouring the label.
+
+   The previous rule set `color: var(--blue)` on :hover. `.fchip:hover` and
+   `.fchip.on` carry the same specificity (0,2,0), and :hover was declared
+   later, so it won on the selected chip: a white label was repainted blue
+   against a blue ground and the word disappeared entirely. Hovering the
+   active Drops filter left a blank pill.
+
+   So all three states are now stated in full here, in specificity order, and
+   none of them depends on inheriting a colour from another block. */
 .fchip.on {
-  background: var(--blue); border-color: var(--blue);
+  background: var(--blue); border-color: var(--blue); color: #fff;
   box-shadow: 0 2px 10px -3px rgba(2, 64, 154, .5);
 }
-.fchip:hover { border-color: var(--blue); color: var(--blue); }
+.fchip:hover {
+  background: var(--blue); border-color: var(--blue); color: #fff;
+}
+/* The selected chip still has to answer the pointer, so it deepens rather
+   than staying put — and (0,3,0) beats the plain :hover above. */
+.fchip.on:hover {
+  background: var(--blue-dk); border-color: var(--blue-dk); color: #fff;
+}
 
 /* ---- record rows / spec tables ----------------------------------------- */
 .rrow .k { color: var(--blue); }

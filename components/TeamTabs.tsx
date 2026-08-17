@@ -4,13 +4,38 @@ import { useState } from "react";
 
 import { PersonIcon, PhotoIcon } from "@/components/icons";
 
-/* Intake form §4: 8 employees to be featured. Names, designations and photos
-   are still to be supplied as a list. */
-const TEAM_EMP = Array.from({ length: 8 }, () => ({
-  n: "[CLIENT: name]",
-  r: "[CLIENT: designation]",
-  d: "[CLIENT: 30–50 word profile]",
-}));
+type Employee = {
+  n: string;
+  r: string;
+  d: string;
+  /** qualification chips, where supplied */
+  q?: string[];
+  /** direct line, where the person is a published point of contact */
+  tel?: string;
+};
+
+/* Intake form §4: 8 employees to be featured. The first is confirmed; the
+   remaining seven are still to be supplied as a list, with photographs.
+
+   The profile copy below is written, not supplied — it states the role and
+   the standard the company holds itself to, and deliberately claims nothing
+   checkable that the client has not given us. No years of experience, no
+   previous employers, no achievements: those are facts about a real person
+   and have to come from him, not from a copywriter. */
+const TEAM_EMP: Employee[] = [
+  {
+    n: "Sanjeev Raina",
+    r: "Chief Executive Officer",
+    q: ["B Sc (Agriculture)", "MBA"],
+    tel: "+91 99882 88678",
+    d: "Trained in agricultural science and in business, Sanjeev leads Piyushwani from sourcing to shelf. He holds the company to a single test — that everything printed on a pack can be traced back to a record — and builds the manufacturing and distribution partnerships that make that possible.",
+  },
+  ...Array.from({ length: 7 }, () => ({
+    n: "[CLIENT: name]",
+    r: "[CLIENT: designation]",
+    d: "[CLIENT: 30–50 word profile]",
+  })),
+];
 
 const TEAM_DOC = Array.from({ length: 3 }, () => ({
   n: "[CLIENT: Dr. name]",
@@ -30,6 +55,15 @@ const GALLERY = [
   "Events",
   "Team",
 ];
+
+/* Every field on these cards used to be wrapped in the amber gap chip,
+   because every field was an intake note. Now that some are filled, the chip
+   has to be conditional — a real name rendered as a gap chip reads as broken,
+   and an unfilled one rendered plainly reads as content. The bracket is the
+   tell, so it is what the check keys on. */
+function Field({ v }: { v: string }) {
+  return v.startsWith("[CLIENT:") ? <span className="ph">{v}</span> : <>{v}</>;
+}
 
 type Tab = "emp" | "doc" | "gal";
 
@@ -61,8 +95,8 @@ export default function TeamTabs() {
       <div hidden={tab !== "emp"}>
         <p className="lede" style={{ marginBottom: 26 }}>
           Piyushwani operates from two offices in Laxmi Nagar, East Delhi, with a
-          team of eight spanning operations, quality documentation, customer
-          support and logistics.
+          team of eight spanning leadership, operations, quality documentation,
+          customer support and logistics.
         </p>
         <div className="grid g-4">
           {TEAM_EMP.map((p, i) => (
@@ -72,14 +106,26 @@ export default function TeamTabs() {
               </div>
               <div className="person-in">
                 <h3>
-                  <span className="ph">{p.n}</span>
+                  <Field v={p.n} />
                 </h3>
                 <div className="role">
-                  <span className="ph">{p.r}</span>
+                  <Field v={p.r} />
                 </div>
                 <p>
-                  <span className="ph">{p.d}</span>
+                  <Field v={p.d} />
                 </p>
+                {p.q ? (
+                  <div className="qual">
+                    {p.q.map((q) => (
+                      <span key={q}>{q}</span>
+                    ))}
+                  </div>
+                ) : null}
+                {p.tel ? (
+                  <p className="person-tel">
+                    <a href={`tel:${p.tel.replace(/\s/g, "")}`}>{p.tel}</a>
+                  </p>
+                ) : null}
               </div>
             </div>
           ))}

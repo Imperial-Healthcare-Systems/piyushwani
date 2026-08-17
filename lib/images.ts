@@ -19,6 +19,13 @@ export const IMG = {
   "prod-capsules": { src: "/images/prod-capsules.jpg", width: 760, height: 507 },
   "prod-syrups": { src: "/images/prod-syrups.jpg", width: 760, height: 507 },
   "prod-nutraceuticals": { src: "/images/prod-nutraceuticals.jpg", width: 760, height: 507 },
+  /* Client-supplied pack shot. Square, where the other four tiles are 3:2 —
+     .cattile is a 3:2 box with object-fit:cover, so it crops the top and
+     bottom bands and keeps the box and bottle. Also the heaviest source in
+     the set at 1.7 MB against ~50 KB; next/image resizes it per breakpoint so
+     the browser never receives that, but a downscaled original would still be
+     worth having in the repo. */
+  "prod-drops": { src: "/images/nasal.png", width: 1254, height: 1254 },
   "footer-molecular": { src: "/images/footer-molecular.jpg", width: 1200, height: 800 },
   logo: { src: "/images/logo.jpg", width: 512, height: 512 },
   /* The navbar lockup. Derived from logo-nav-bar.png: cropped to the artwork

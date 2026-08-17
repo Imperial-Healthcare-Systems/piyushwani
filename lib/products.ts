@@ -12,6 +12,10 @@ export type Product = {
   /** type: prescription vs nutraceutical */
   t: "rx" | "nut";
   slug?: string;
+  /** image key from lib/images.ts, where a pack shot exists */
+  img?: string;
+  /** pack size as printed on the carton */
+  pack?: string;
 };
 
 export const PRODUCTS: Product[] = [
@@ -20,11 +24,23 @@ export const PRODUCTS: Product[] = [
   { n: "Oral Rehydration Salts IP", c: "Sodium chloride · Potassium chloride · Sodium citrate · Dextrose", f: "Powder", t: "rx" },
   { n: "Pantoprazole 40 mg Tablets IP", c: "Pantoprazole Sodium IP eq. to Pantoprazole 40 mg", f: "Tablet", t: "rx" },
   { n: "Povidone-Iodine 5% Solution IP", c: "Povidone-Iodine IP 5% w/v", f: "Solution", t: "rx" },
-  /* Placeholder for the Drops category. A category with no live product is
-     filtered out of the products page tabs (see ProductGrid's `available`),
-     so the shelf needs one entry to exist at all. The composition is a gap
-     chip rather than an invented formula. */
-  { n: "Nasal Drops", c: "[CLIENT: full composition]", f: "Drops", t: "rx" },
+  /* The Drops shelf. A category with no live product is filtered out of the
+     products page tabs (see ProductGrid's `available`), so this entry is what
+     makes the category exist at all.
+
+     Composition and pack size are transcribed from the client-supplied pack
+     artwork (public/images/nasal.png), which is the definitive source for
+     both — the disclaimer page says as much. Worth a read-back against the
+     approved carton before launch; it is the one product here whose formula
+     is not a generic placeholder. */
+  {
+    n: "Nasal Drops",
+    c: "Xylometazoline Hydrochloride IP 0.05% w/v · Benzalkonium Chloride Solution IP 0.01% w/v · Excipients q.s. in a buffered aqueous solution",
+    f: "Drops",
+    t: "rx",
+    img: "prod-drops",
+    pack: "10 ml",
+  },
   { n: "Vitamin D3 60000 IU Sachets", c: "Cholecalciferol 60000 IU", f: "Sachet", t: "nut" },
   { n: "Calcium Carbonate & Vitamin D3 Tablets", c: "Calcium Carbonate 1250 mg · Cholecalciferol 250 IU", f: "Tablet", t: "nut" },
   { n: "Multivitamin & Multimineral Tablets", c: "[CLIENT: full composition]", f: "Tablet", t: "nut" },
@@ -48,7 +64,7 @@ export const PRODUCTS: Product[] = [
 export const CAT_TILES: [string, string, string][] = [
   ["Syrups", "prod-syrups", "Piyushwani syrup bottle and carton"],
   ["Nutraceuticals", "prod-nutraceuticals", "Piyushwani nutraceutical bottle and carton"],
-  ["Drops", "", "Piyushwani drops bottle and carton"],
+  ["Drops", "prod-drops", "Piyushwani nasal drops bottle and carton"],
   ["Tablets", "prod-tablets", "Piyushwani tablet pack and blister"],
 ];
 

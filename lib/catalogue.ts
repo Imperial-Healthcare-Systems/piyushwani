@@ -217,11 +217,15 @@ function seedProducts(at: string): AdminProduct[] {
     kind: p.t,
     shortDescription: "",
     description: "",
-    image: "",
+    /* Most of the sample catalogue has no pack shot, so these stay empty and
+       the card falls back to its placeholder mark. Where the client has
+       supplied artwork the product carries the image key and the pack size
+       printed on the carton. */
+    image: p.img ?? "",
     additionalImages: [],
     benefits: [],
     specifications: [],
-    packSize: "",
+    packSize: p.pack ?? "",
     usage: "",
     status: "active" as const,
     featured: false,

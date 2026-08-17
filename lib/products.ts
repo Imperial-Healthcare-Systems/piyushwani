@@ -38,7 +38,7 @@ export const PRODUCTS: Product[] = [
     c: "Xylometazoline Hydrochloride IP 0.05% w/v · Benzalkonium Chloride Solution IP 0.01% w/v · Excipients q.s. in a buffered aqueous solution",
     f: "Drops",
     t: "rx",
-    img: "prod-drops",
+    img: "prod-nasal-drops",
     pack: "10 ml",
   },
   { n: "Vitamin D3 60000 IU Sachets", c: "Cholecalciferol 60000 IU", f: "Sachet", t: "nut" },

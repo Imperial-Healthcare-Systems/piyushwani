@@ -807,20 +807,6 @@ body { overflow-x: clip; }
    a border-image gradient would have been drawn ignoring border-radius,
    squaring off the 16px corners it is meant to decorate. */
 
-/* ---- people ------------------------------------------------------------ */
-/* A published direct line, set apart from the profile above it so it reads as
-   a contact rather than as another sentence. */
-.person-tel {
-  margin-top: 10px !important;
-  padding-top: 9px;
-  border-top: 1px solid var(--rule-soft);
-  font-family: var(--f-mono);
-  font-size: .74rem !important;
-  letter-spacing: .02em;
-}
-.person-tel a { color: var(--blue); text-decoration: none; }
-.person-tel a:hover { text-decoration: underline; }
-
 /* ---- filter chips ------------------------------------------------------ */
 /* Hover inverts the chip — blue ground, white label — instead of only
    recolouring the label.
